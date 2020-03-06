@@ -41,6 +41,7 @@ Experiments with procedural music and platform mechanics in Godot game engine
     - generate shapes, normals, collisions, physics and occlusion
 - Music logic interface :
     - editor plugin to display music and MIDI data synced with time
+    - display layers : audio waveform + midi events (selectable + settings) + animationPlayer or animationTree keyframes or custom durations or easings
     - game clock, logic and events in sync with music tempo
     - logic editor for scenario, scenes, level, objects and player
 - Platform logic
