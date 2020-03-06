@@ -54,4 +54,4 @@ Overall, have a full music visual game editor that :
 - links them together in the game logic through events and level building
 - allows natural game and level design in the editor
 
-![alt text](https://gph.is/g/aQQLQ7q "Good Luck !!")
+![Good Luck !](https://media.giphy.com/media/Y2b0W3I2UnNiVuYhVc/giphy.gif "Good Luck !!")
