@@ -28,25 +28,25 @@ Experiments with procedural music and platform mechanics in Godot game engine
 ## Tool
 
 - Music data creation : 
--- bulk audio files import to structure in editor
--- MIDI file conversion and parsing to data structure
+    - bulk audio files import to structure in editor
+    - MIDI file conversion and parsing to data structure
 - Music data structure :
--- audio layers ready to use
--- tempo data synced with temporal data
--- MIDI events synced with audio layers and tempo
--- events and logic structured for game mechanics
+    - audio layers ready to use
+    - tempo data synced with temporal data
+    - MIDI events synced with audio layers and tempo
+    - events and logic structured for game mechanics
 - Asset import :
--- defined import workflow from Blender to Godot
--- mesh generation from imported assets
--- generate shapes, normals, collisions, physics and occlusion
+    - defined import workflow from Blender to Godot
+    - mesh generation from imported assets
+    - generate shapes, normals, collisions, physics and occlusion
 - Music logic interface :
--- editor plugin to display music and MIDI data synced with time
--- game clock, logic and events in sync with music tempo
--- logic editor for scenario, scenes, level, objects and player
+    - editor plugin to display music and MIDI data synced with time
+    - game clock, logic and events in sync with music tempo
+    - logic editor for scenario, scenes, level, objects and player
 - Platform logic
--- adapted physics and interactions to music and circular design
--- animations synced with music
--- level structure synced to music structure and logic
+    - adapted physics and interactions to music and circular design
+    - animations synced with music
+    - level structure synced to music structure and logic
 
 Overall, have a full music visual game editor that :
 - imports music data (audio & midi) and assets (3D and 2D objects)
@@ -54,4 +54,5 @@ Overall, have a full music visual game editor that :
 - links them together in the game logic through events and level building
 - allows natural game and level design in the editor
 
+    
 ![Good Luck !](https://media.giphy.com/media/Y2b0W3I2UnNiVuYhVc/giphy.gif "Good Luck !!")
