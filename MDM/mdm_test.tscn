@@ -1,0 +1,44 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://song/main_riff/Tower_track_piano_riff_01.ogg" type="AudioStream" id=1]
+[ext_resource path="res://MDM/mdm_test.gd" type="Script" id=2]
+[ext_resource path="res://addons/mixing-desk/music/mixing_desk_music.gd" type="Script" id=3]
+[ext_resource path="res://addons/mixing-desk/music/song.gd" type="Script" id=4]
+[ext_resource path="res://addons/mixing-desk/music/containers/core_cont.gd" type="Script" id=5]
+[ext_resource path="res://song/main_riff/Tower_track_piano_melody_01.ogg" type="AudioStream" id=6]
+[ext_resource path="res://song/main_riff/Tower_track_glock_melody_01.ogg" type="AudioStream" id=7]
+[ext_resource path="res://song/main_riff/Tower_track_drum_taiko_01.ogg" type="AudioStream" id=8]
+[ext_resource path="res://song/main_riff/Tower_track_piano_bass_01.ogg" type="AudioStream" id=9]
+
+[node name="mdm_test" type="Node"]
+script = ExtResource( 2 )
+
+[node name="MixingDeskMusic" type="Node" parent="."]
+script = ExtResource( 3 )
+play_mode = 4
+autoplay = NodePath(".")
+
+[node name="main_riff_01" type="Node" parent="MixingDeskMusic"]
+script = ExtResource( 4 )
+tempo = 120
+bars = 8
+beats_in_bar = 8
+transition_beats = 2.0
+
+[node name="CoreContainer" type="Node" parent="MixingDeskMusic/main_riff_01"]
+script = ExtResource( 5 )
+
+[node name="piano_riff_01" type="AudioStreamPlayer" parent="MixingDeskMusic/main_riff_01/CoreContainer"]
+stream = ExtResource( 1 )
+
+[node name="drum_taiko_01" type="AudioStreamPlayer" parent="MixingDeskMusic/main_riff_01/CoreContainer"]
+stream = ExtResource( 8 )
+
+[node name="glock_melody_01" type="AudioStreamPlayer" parent="MixingDeskMusic/main_riff_01/CoreContainer"]
+stream = ExtResource( 7 )
+
+[node name="piano_bass_01" type="AudioStreamPlayer" parent="MixingDeskMusic/main_riff_01/CoreContainer"]
+stream = ExtResource( 9 )
+
+[node name="piano_melody_01" type="AudioStreamPlayer" parent="MixingDeskMusic/main_riff_01/CoreContainer"]
+stream = ExtResource( 6 )

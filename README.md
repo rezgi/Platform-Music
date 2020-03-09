@@ -57,11 +57,3 @@ Overall, have a full music visual game editor that :
 
 
 ![Good Luck !](https://media.giphy.com/media/Y2b0W3I2UnNiVuYhVc/giphy.gif "Good Luck !!")
-
-## TODO
-
-- test MDM with basic music layers
-- ask arlez about MIDI parsing feature (again...)
-- check if metronome can be useful, import if from previous project (onna) and sync it to MDM
-- add audio bulk upload feature and interface to MDM
-- do we need more music data from signals ?
