@@ -1,0 +1,43 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://song/main_riff/Tower_track_piano_bass_01.ogg" type="AudioStream" id=1]
+[ext_resource path="res://song/main_riff/Tower_track_drum_taiko_01.ogg" type="AudioStream" id=2]
+[ext_resource path="res://song/main_riff/Tower_track_glock_melody_01.ogg" type="AudioStream" id=3]
+[ext_resource path="res://song/main_riff/Tower_track_glock_melody_02.ogg" type="AudioStream" id=4]
+[ext_resource path="res://song/main_riff/Tower_track_piano_riff_02.ogg" type="AudioStream" id=5]
+[ext_resource path="res://song/main_riff/Tower_track_drum_taiko_02.ogg" type="AudioStream" id=6]
+[ext_resource path="res://song/main_riff/Tower_track_piano_melody_02.ogg" type="AudioStream" id=7]
+[ext_resource path="res://song/main_riff/Tower_track_piano_melody_01.ogg" type="AudioStream" id=8]
+[ext_resource path="res://song/main_riff/Tower_track_piano_riff_01.ogg" type="AudioStream" id=9]
+
+[node name="SongLayers" type="Node"]
+
+[node name="piano_riff_01" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="drum_taiko_01" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+
+[node name="glock_melody_01" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="piano_bass_01" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+
+[node name="piano_melody_01" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="piano_riff_02" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="drum_taiko_02" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="glock_melody_02" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="piano_bass_02" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+
+[node name="piano_melody_02" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )

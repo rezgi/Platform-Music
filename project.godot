@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "Tempo",
+"language": "GDScript",
+"path": "res://tempo/tempo.gd"
+} ]
 _global_script_class_icons={
-
+"Tempo": "res://tempo/tempo.png"
 }
 
 [application]
@@ -18,10 +23,6 @@ _global_script_class_icons={
 config/name="13 - Platform Music"
 config/icon="res://icon.png"
 
-[editor_plugins]
+[display]
 
-enabled=PoolStringArray( "mixing-desk" )
-
-[rendering]
-
-environment/default_environment="res://default_env.tres"
+window/size/always_on_top=true
