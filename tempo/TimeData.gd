@@ -5,8 +5,6 @@ extends Node
 # create a tempo <> time converter
 # how to use 1/2, 1/8, 1/32
 # how to implement dotted time
-# rename measure dict to metronome ?
-# private and public functions ?
 
 onready var line_edit := $CenterContainer/VBoxContainer/LineEdit
 onready var btn := $CenterContainer/VBoxContainer/Button
@@ -21,9 +19,6 @@ var measure_sound_on := false
 var quart_sound_on := false
 var sixteenth_sound_on := false
 var sixtyfourth_sound_on := false
-var half_sound_on := false
-var eight_sound_on := false
-var thirtysecond_sound_on := false
 
 func _ready() -> void:
 	set_physics_process(false)
@@ -35,7 +30,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if btn.pressed:
 		count_tempo(delta)
-		label.text = str(measure.tempo)
+		label.text = str(tempo_to_array())
 
 func _on_check_measure_toggled(button_pressed: bool) -> void:
 	measure_sound_on = button_pressed
@@ -48,15 +43,6 @@ func _on_check_sixteenth_toggled(button_pressed: bool) -> void:
 
 func _on_check_sixtyfourth_toggled(button_pressed: bool) -> void:
 	sixtyfourth_sound_on = button_pressed
-
-func _on_check_half_toggled(button_pressed: bool) -> void:
-	half_sound_on = button_pressed
-
-func _on_check_eight_toggled(button_pressed: bool) -> void:
-	eight_sound_on = button_pressed
-
-func _on_check_thirtysecond_toggled(button_pressed: bool) -> void:
-	thirtysecond_sound_on = button_pressed
 
 func _on_Button_toggled(button_pressed) -> void:
 	if button_pressed:
@@ -99,32 +85,19 @@ func count_tempo(delta) -> void:
 		delta_accumulator = 0.0
 		measure.tempo.sixtyfourth += 1
 		play_metronome(sixtyfourth_sound_on, 5, -10)
-	
-		if measure.tempo.sixtyfourth == measure.time.bar_signature / 2:
-			measure.tempo.thirtysecond += 1
-			play_metronome(sixtyfourth_sound_on, 12, -14)
+		
 		if measure.tempo.sixtyfourth > measure.time.bar_signature:
 			measure.tempo.sixteenth += 1
 			measure.tempo.sixtyfourth = 1
 			play_metronome(sixteenth_sound_on, 4, -10)
-		if measure.tempo.thirtysecond > measure.time.bar_signature:
-			measure.tempo.eight += 1
-			measure.tempo.thirtysecond = 1
-			play_metronome(eight_sound_on, 10, -14)
 		if measure.tempo.sixteenth > measure.time.bar_signature:
 			measure.tempo.quart += 1
 			measure.tempo.sixteenth = 1
 			play_metronome(quart_sound_on, 2, -5)
-		if measure.tempo.eight > measure.time.bar_signature:
-			measure.tempo.half += 1
-			measure.tempo.eight = 1
-			play_metronome(half_sound_on, 8, -14)
 		if measure.tempo.quart > measure.time.beat_signature:
 			measure.tempo.full += 1
 			measure.tempo.quart = 1
 			play_metronome(measure_sound_on, 1, 0)
-		if measure.tempo.half > measure.time.beat_signature / 2:
-			measure.tempo.half = 1
 
 func bpm_to_measure_duration(bpm) -> float:
 	return 60.0 / (bpm / 4.0)
@@ -132,11 +105,8 @@ func bpm_to_measure_duration(bpm) -> float:
 func reset_measure_tempo() -> Dictionary:
 	var d = {}
 	d.full = 1
-	d.half = 1
 	d.quart = 1
-	d.eight = 1
 	d.sixteenth = 1
-	d.thirtysecond = 1
 	d.sixtyfourth = 1
 	return d
 
@@ -184,60 +154,3 @@ func time_to_tempo():
 
 func dot_time():
 	pass
-
-#if delta_accumulator >= measure.time.sixtyfourth:
-#	measure.time.delay = delta_accumulator - measure.time.sixtyfourth
-#	delta_accumulator = 0.0
-#	measure.tempo.sixtyfourth += 1
-#	play_metronome(sixtyfourth_sound_on, 5, -10)
-#
-#	if measure.tempo.sixtyfourth > measure.time.bar_signature:
-#		measure.tempo.sixteenth += 1
-#		measure.tempo.sixtyfourth = 1
-#		play_metronome(sixteenth_sound_on, 4, -10)
-#	if measure.tempo.sixteenth > measure.time.bar_signature:
-#		measure.tempo.quart += 1
-#		measure.tempo.sixteenth = 1
-#		play_metronome(quart_sound_on, 2, -5)
-#	if measure.tempo.quart > measure.time.beat_signature:
-#		measure.tempo.full += 1
-#		measure.tempo.quart = 1
-#		play_metronome(measure_sound_on, 1, 0)
-
-
-#	if delta_accumulator >= measure.time.sixtyfourth:
-#		measure.time.delay = delta_accumulator - measure.time.sixtyfourth
-#		delta_accumulator = 0.0
-#		measure.tempo.sixtyfourth += 1
-#		play_metronome(sixtyfourth_sound_on, 5, -10)
-#
-#		if measure.tempo.sixtyfourth == measure.time.bar_signature / 2:
-#			measure.tempo.thirtysecond += 1
-##			play_metronome(sixteenth_sound_on, 10, -14)
-#		if measure.tempo.sixtyfourth > measure.time.bar_signature:
-#			measure.tempo.sixteenth += 1
-#			measure.tempo.sixtyfourth = 1
-#			play_metronome(sixteenth_sound_on, 4, -10)
-#		if measure.tempo.thirtysecond > measure.time.bar_signature:
-#			measure.tempo.eight += 1
-#			measure.tempo.thirtysecond = 1
-##			play_metronome(quart_sound_on, 8, -14)
-#		if measure.tempo.sixteenth > measure.time.bar_signature:
-#			measure.tempo.quart += 1
-#			measure.tempo.sixteenth = 1
-#			play_metronome(quart_sound_on, 2, -5)
-#		if measure.tempo.eight > measure.time.bar_signature:
-#			measure.tempo.half += 1
-#			measure.tempo.eight = 1
-##			play_metronome(measure_sound_on, 6, -14)
-#		if measure.tempo.quart > measure.time.beat_signature:
-#			measure.tempo.full += 1
-#			measure.tempo.quart = 1
-#			play_metronome(measure_sound_on, 1, 0)
-#		if measure.tempo.half > measure.time.beat_signature:
-##			measure.tempo.full += 1
-#			measure.tempo.half = 1
-##			play_metronome(measure_sound_on, 1, 0)
-
-
-
