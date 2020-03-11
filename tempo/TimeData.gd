@@ -1,10 +1,29 @@
 extends Node
 
+"""
+Tempo and Time algorithm, root of the rythmic design.
+
+- Metronome tool
+- Custom BPM & time signature
+- Tempo subdivision up to 64 per measure
+- Tempo format : [measure, quart, sixteenth, sixtyfourth] -> [1, 4, 4, 4]
+- Input fields : BPM / time signature / metronome clicks on subdivisions / tempo display
+- Methods : get & set tempo, tempo to time, time to tempo
+"""
+
 # measure.quart.sixteenth.sixtyfourth > 1.1.1.1 to 1.4.4.4
 # binary has 4 quarts, ternay has 3 thirds > binary : 1.4.4.4 / ternary : 1.3.4.4
 # create a tempo <> time converter
+# tempo to time needs to take into account signature, works only for 4/4 now
 # how to use 1/2, 1/8, 1/32
 # how to implement dotted time
+# make UI togglable for integration into other scenes, or integrate into Inspector ? Both ?
+# rename scene and class icon, delete old tempo.tscn & its script
+# modulate script : signals / UI inputs / tempo. leave only main logic and exposed methods in here
+# signal on each tick, send measure dict
+# rename 'measure' dict to 'metronome'
+# rename scene to 'metronome' and give class_name & icon
+# display running time sync with tempo updates (1/64)
 
 onready var line_edit := $CenterContainer/VBoxContainer/LineEdit
 onready var btn := $CenterContainer/VBoxContainer/Button
@@ -44,9 +63,13 @@ func _on_check_sixteenth_toggled(button_pressed: bool) -> void:
 func _on_check_sixtyfourth_toggled(button_pressed: bool) -> void:
 	sixtyfourth_sound_on = button_pressed
 
-func _on_Button_toggled(button_pressed) -> void:
+func _on_Button_toggled(button_pressed: bool) -> void:
 	if button_pressed:
-		if get_and_set_tempo_data():
+		if get_and_set_tempo_data(
+			int(line_edit.text),
+			int(beat_signature.text),
+			int(bar_signature.text)
+		):
 			set_physics_process(true)
 			btn.text = "Stop"
 		else:
@@ -60,24 +83,20 @@ func _on_Button_toggled(button_pressed) -> void:
 		measure.tempo = reset_measure_tempo()
 		btn.text = "Start"
 
-func get_and_set_tempo_data() -> bool:
-	var bpm_input = int(line_edit.text)
-	var quart_input = int(beat_signature.text)
-	var beat_input = int(bar_signature.text)
-	
+func get_and_set_tempo_data(bpm_input: int, quart_input: int, beat_input: int) -> bool:
 	if bpm_input and quart_input and beat_input:
 		measure.time = subdivide_tempo_to_time(
 			bpm_to_measure_duration(bpm_input), 
 			quart_input, 
 			beat_input
 			)
-		
+#		print(tempo_to_time([5, 3, 4, 2]))
 		play_metronome(sixtyfourth_sound_on, 5, -10)
 		play_metronome(measure_sound_on, 1, 0)
 		return true
 	else: return false
 
-func count_tempo(delta) -> void:
+func count_tempo(delta: float) -> void:
 	delta_accumulator += delta
 	
 	if delta_accumulator >= measure.time.sixtyfourth:
@@ -99,7 +118,8 @@ func count_tempo(delta) -> void:
 			measure.tempo.quart = 1
 			play_metronome(measure_sound_on, 1, 0)
 
-func bpm_to_measure_duration(bpm) -> float:
+func bpm_to_measure_duration(bpm: int) -> float:
+	# take signature into consideration
 	return 60.0 / (bpm / 4.0)
 
 func reset_measure_tempo() -> Dictionary:
@@ -123,7 +143,8 @@ func reset_measure_time() -> Dictionary:
 	d.bar_signature = 0
 	return d
 
-func subdivide_tempo_to_time(measure_duration, quart_input, beat_input) -> Dictionary:
+func subdivide_tempo_to_time(measure_duration: float, quart_input: int, beat_input: int) -> Dictionary:
+	# take signature into consideration
 	var d = {}
 	d.full = measure_duration
 	d.half = measure_duration / 2.0
@@ -146,11 +167,10 @@ func play_metronome(is_on: bool, pitch: float, volume: float) -> void:
 func tempo_to_array() -> Array:
 	return measure.tempo.values()
 
-func tempo_to_time():
-	pass
-
-func time_to_tempo():
-	pass
-
-func dot_time():
-	pass
+func tempo_to_time(tempo_array: Array) -> float:
+	# take signature into account
+	var bar = (tempo_array[0] - 1) * measure.time.full
+	var quart = (tempo_array[1] - 1) * measure.time.quart
+	var sixt = (tempo_array[2] - 1) * measure.time.sixteenth
+	var thirt = (tempo_array[3] - 1) * measure.time.sixtyfourth
+	return bar + quart + sixt + thirt

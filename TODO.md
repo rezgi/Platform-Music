@@ -46,8 +46,13 @@
 
 ## Steps
 
-- get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
-- get a general tempo tick that will be received by other elements to generate time-based data for events and structures
+[x] get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
+[-] additional methods : tempo to time, time to tempo
+[-] UI : toggle tool in 2D editor, add inspector settings ? 
+[-] complete the tool for 1/32, 1/8, 1/2 measures
+[-] testing for weird measures like 7/5 for ex
+[-] testing for signatures changes on the fly
+[-] send (signal) periodic tempo data to generate time-based data for external events and structures
 - design a tempo grid that will sync and display tempo data : time cursor, bpm subdivisions, play, pause, stop, total time duration, zoom in & out
 - create an audio project creator/importer
   - read and parse midi JSON that will set the grid layers, duration & markers
