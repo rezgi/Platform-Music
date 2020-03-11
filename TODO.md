@@ -46,7 +46,7 @@
 
 ## Steps
 
-- get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough)
+- get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
 - get a general tempo tick that will be received by other elements to generate time-based data for events and structures
 - design a tempo grid that will sync and display tempo data : time cursor, bpm subdivisions, play, pause, stop, total time duration, zoom in & out
 - create an audio project creator/importer

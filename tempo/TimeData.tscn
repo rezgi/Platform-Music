@@ -1,24 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://tempo/TimeData.gd" type="Script" id=1]
 [ext_resource path="res://tempo/metronome_01.ogg" type="AudioStream" id=2]
-
-[sub_resource type="Animation" id=1]
-resource_name = "blink"
-length = 0.1
-step = 0.01
-tracks/0/type = "value"
-tracks/0/path = NodePath("CenterContainer/VBoxContainer/ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.01, 0.02, 0.03 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
 
 [node name="TimeData" type="Node"]
 script = ExtResource( 1 )
@@ -31,20 +14,62 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 462.0
-margin_top = 211.0
-margin_right = 562.0
-margin_bottom = 389.0
+margin_left = 296.0
+margin_top = 202.0
+margin_right = 728.0
+margin_bottom = 397.0
 custom_constants/separation = 20
 
 [node name="LineEdit" type="LineEdit" parent="CenterContainer/VBoxContainer"]
-margin_right = 100.0
+margin_right = 432.0
 margin_bottom = 24.0
+text = "BPM"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 432.0
+margin_bottom = 84.0
+
+[node name="check_measure" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_right = 101.0
+margin_bottom = 40.0
+text = "1/1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="check_quart" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 105.0
+margin_right = 206.0
+margin_bottom = 40.0
+text = "1/4"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="check_sixiteenth" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 210.0
+margin_right = 319.0
+margin_bottom = 40.0
+text = "1/16"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="check_sixtyfourth" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 323.0
+margin_right = 432.0
+margin_bottom = 40.0
+text = "1/64"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_top = 44.0
-margin_right = 100.0
-margin_bottom = 84.0
+margin_top = 104.0
+margin_right = 432.0
+margin_bottom = 144.0
 rect_min_size = Vector2( 100, 40 )
 toggle_mode = true
 text = "Start"
@@ -53,27 +78,15 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 104.0
-margin_right = 100.0
-margin_bottom = 118.0
-text = "0.0"
+margin_top = 164.0
+margin_right = 432.0
+margin_bottom = 195.0
+text = "0.0.0.0
+0.0"
 align = 1
-
-[node name="ColorRect" type="ColorRect" parent="CenterContainer/VBoxContainer"]
-margin_top = 138.0
-margin_right = 100.0
-margin_bottom = 178.0
-rect_min_size = Vector2( 0, 40 )
-color = Color( 1, 1, 1, 0.875 )
-
-[node name="Timer" type="Timer" parent="."]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
 volume_db = -10.0
 pitch_scale = 5.0
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/blink = SubResource( 1 )
 [connection signal="toggled" from="CenterContainer/VBoxContainer/Button" to="." method="_on_Button_toggled"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
