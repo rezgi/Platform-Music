@@ -14,62 +14,110 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 296.0
-margin_top = 202.0
-margin_right = 728.0
-margin_bottom = 397.0
-custom_constants/separation = 20
+margin_left = 447.0
+margin_top = 123.0
+margin_right = 576.0
+margin_bottom = 477.0
+rect_min_size = Vector2( 110, 0 )
+rect_clip_content = true
+custom_constants/separation = 10
 
 [node name="LineEdit" type="LineEdit" parent="CenterContainer/VBoxContainer"]
-margin_right = 432.0
+margin_right = 129.0
 margin_bottom = 24.0
-text = "BPM"
+text = "120"
 align = 1
+placeholder_text = "Enter BPM"
+placeholder_alpha = 0.4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 44.0
-margin_right = 432.0
-margin_bottom = 84.0
+margin_top = 34.0
+margin_right = 129.0
+margin_bottom = 58.0
 
-[node name="check_measure" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_right = 101.0
+[node name="QuartSignature" type="LineEdit" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_right = 58.0
+margin_bottom = 24.0
+text = "4"
+align = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 62.0
+margin_top = 5.0
+margin_right = 67.0
+margin_bottom = 19.0
+text = "/"
+
+[node name="BeatSignature" type="LineEdit" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 71.0
+margin_right = 129.0
+margin_bottom = 24.0
+text = "4"
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/VBoxContainer"]
+margin_top = 68.0
+margin_right = 129.0
+margin_bottom = 78.0
+rect_min_size = Vector2( 0, 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 129.0
+margin_bottom = 260.0
+
+[node name="check_measure" type="CheckButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+margin_right = 129.0
 margin_bottom = 40.0
+pressed = true
 text = "1/1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="check_quart" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_left = 105.0
-margin_right = 206.0
-margin_bottom = 40.0
+[node name="check_quart" type="CheckButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 129.0
+margin_bottom = 84.0
+pressed = true
 text = "1/4"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="check_sixiteenth" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_left = 210.0
-margin_right = 319.0
-margin_bottom = 40.0
+[node name="check_sixteenth" type="CheckButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 129.0
+margin_bottom = 128.0
 text = "1/16"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="check_sixtyfourth" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_left = 323.0
-margin_right = 432.0
-margin_bottom = 40.0
+[node name="check_sixtyfourth" type="CheckButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 132.0
+margin_right = 129.0
+margin_bottom = 172.0
 text = "1/64"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/VBoxContainer"]
+margin_top = 270.0
+margin_right = 129.0
+margin_bottom = 280.0
+rect_min_size = Vector2( 0, 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Button" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_top = 104.0
-margin_right = 432.0
-margin_bottom = 144.0
+margin_top = 290.0
+margin_right = 129.0
+margin_bottom = 330.0
 rect_min_size = Vector2( 100, 40 )
 toggle_mode = true
 text = "Start"
@@ -78,15 +126,19 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 164.0
-margin_right = 432.0
-margin_bottom = 195.0
-text = "0.0.0.0
-0.0"
+margin_top = 340.0
+margin_right = 129.0
+margin_bottom = 354.0
+text = "[0, 0, 0, 0]"
 align = 1
+autowrap = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
 volume_db = -10.0
 pitch_scale = 5.0
+[connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_measure" to="." method="_on_check_measure_toggled"]
+[connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_quart" to="." method="_on_check_quart_toggled"]
+[connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_sixteenth" to="." method="_on_check_sixteenth_toggled"]
+[connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_sixtyfourth" to="." method="_on_check_sixtyfourth_toggled"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/Button" to="." method="_on_Button_toggled"]
