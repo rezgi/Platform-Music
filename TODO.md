@@ -1,58 +1,20 @@
 # TODO
 
-## 0.1
-
-- test MDM with basic music layers
-- check if metronome can be useful, import if from previous project (onna) and sync it to MDM / check synchronisation of metronome tick and MDM tick
-- add audio bulk upload to MDM :
-  - open multiple ogg/wav files
-  - import setting : loop off
-  - add an audioplayer stream and name them with name file
-  - add them to coreContainer or other type
-- bugs :
-  - autoplay has to be assigned to MDM node
-  - endless loop ends after 2 plays when only one song in MDM, solved with 2 songs
-  - have the option to reset beat number at each bar
-  - have the option to export absolute time (for later sync with events and MIDI)
-  - on mdm.stop(song), error : _disconnect: Nonexistent signal 'finished' in [AudioStreamPlayer:1195]
-  - on song changed signal, error : emit_signal: Error calling method from signal 'song_changed': Method expected 2 arguments, but called with 1..
-  - how to access vars like current_song, is_playing, etc. ?
-  - strange accumulation of bars when 2 songs played, not 1 > 2 then 3 > 4 or 1 > 2 for second song, but 2 > 3
-- decision : not use MDM, game mechanics need way more refined musical data imported from DAW. Custom tool to make
-
 ## 0.2
-- Tempo tool import from Onna project
-- Refactoring aiming for use in DAW tool :
-  - more measure subdivision : add up to 1/16th note length
-  - better tempo naming : section, whole (1), half (1/2), half_dot (1/2.), quarter (1/4), quarter_dot (1/4.), eight (1/8), eight_dot (1/8.), sixteenth (1/16), sixteenth_dot (1/16.)
-  - multiple scenes can get tempo data, is global needed ?
-  - check latency, use delta instead of timer ? no, try OS.get_ticks_msec() until it reaches the given bpm2time. No, get back to timer
 
-## Tool features
-
-- export cubase marker track in midi file and lay out audio files and midi data according to markers
-- how to export audio files chunks from Cubase ? Need to check XML export format and music notation maybe / will export full length audio and cut in game
-- each audio / midi data will have its local and global time
-- bulk load audio files and name / import them in scene audioPlayers
-- check how to manage layering, fades, rollovers, pre-enter
-- sync audio files and midi tracks through name comparison
-- arrange tracks in structure given by marker track
-- sync time and bpm data
-- each track can be setup to wait for a signal event to play and stop
-- midi data can be selected in GUI and used to send time data like start_time, end_time, event_duration, note_height, event_velocity
-- midi data can be used to drive bus effects (EQ, filters, Reverb, etc.) and have procedural ambiances according to levels (ex: enter hammam, error in input makes sound 'as in a womb')
-- midi data can be used to drive animation (animation duration, easings, keyframe insertion, keyframe value, etc.)
-- objects in game inherit a musical class that gives properties like accessing tempo and midi data, auto-injected animationPlayer, specific signals, custom DAW panel on editor clic, etc.
+- [x] get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
+- [x] cleaner algorithm, better time signature consideration and data structure
+- [ ] refactor counting algorithm with new data structure, test OS.get_ticks_msec() again, maybe finer counting and less delay
+- [ ] solve 1/32, 1/8, 1/2 measure counting issue
+- [ ] test for weird measures like 7/5 for ex
+- [ ] test for signatures changes while running, use yield to wait for next measure
+- [ ] additional methods : tempo to time, time to tempo
+- [ ] UI : toggle tool in 2D editor, add inspector settings ? 
+- [ ] send (signal) periodic tempo data to generate time-based data for external events and structures
+- [ ] small delay of nearly 0.002s, test with music layers if can cause problems
 
 ## Steps
 
-[x] get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
-[-] additional methods : tempo to time, time to tempo
-[-] UI : toggle tool in 2D editor, add inspector settings ? 
-[-] complete the tool for 1/32, 1/8, 1/2 measures
-[-] testing for weird measures like 7/5 for ex
-[-] testing for signatures changes on the fly
-[-] send (signal) periodic tempo data to generate time-based data for external events and structures
 - design a tempo grid that will sync and display tempo data : time cursor, bpm subdivisions, play, pause, stop, total time duration, zoom in & out
 - create an audio project creator/importer
   - read and parse midi JSON that will set the grid layers, duration & markers
@@ -76,4 +38,46 @@
 - ex: clicking on a song section to generate a level section / clicking on an midi/audio track in section to generate a level element scene
 - tracks and sections can be routed to buses, signals, animationPlayers, nodeTree
 - nodal UI to manage interactions, data communication, signal & events
-- custom musical logic editor name tentatives : musilogy, goDAW, godAudio
+- custom musical logic editor name tentatives : Musilogy, goDAW, godAudio, audioLogic
+
+## 0.1
+
+- test MDM with basic music layers
+- check if metronome can be useful, import if from previous project (onna) and sync it to MDM / check synchronisation of metronome tick and MDM tick
+- add audio bulk upload to MDM :
+  - open multiple ogg/wav files
+  - import setting : loop off
+  - add an audioplayer stream and name them with name file
+  - add them to coreContainer or other type
+- bugs :
+  - autoplay has to be assigned to MDM node
+  - endless loop ends after 2 plays when only one song in MDM, solved with 2 songs
+  - have the option to reset beat number at each bar
+  - have the option to export absolute time (for later sync with events and MIDI)
+  - on mdm.stop(song), error : _disconnect: Nonexistent signal 'finished' in [AudioStreamPlayer:1195]
+  - on song changed signal, error : emit_signal: Error calling method from signal 'song_changed': Method expected 2 arguments, but called with 1..
+  - how to access vars like current_song, is_playing, etc. ?
+  - strange accumulation of bars when 2 songs played, not 1 > 2 then 3 > 4 or 1 > 2 for second song, but 2 > 3
+
+- decision : not use MDM, game mechanics need way more refined musical data imported from DAW. Custom tool to make
+- Tempo tool import from Onna project
+- Refactoring aiming for use in DAW tool :
+  - more measure subdivision : add up to 1/16th note length
+  - better tempo naming : section, whole (1), half (1/2), half_dot (1/2.), quarter (1/4), quarter_dot (1/4.), eight (1/8), eight_dot (1/8.), sixteenth (1/16), sixteenth_dot (1/16.)
+  - check latency, use delta instead of timer ? no, try OS.get_ticks_msec() until it reaches the given bpm2time. No, get back to timer
+
+## Tool features & ideas
+
+- export cubase marker track in midi file and lay out audio files and midi data according to markers
+- how to export audio files chunks from Cubase ? Need to check XML export format and music notation maybe / will export full length audio and cut in game
+- each audio / midi data will have its local and global time
+- bulk load audio files and name / import them in scene audioPlayers
+- check how to manage layering, fades, rollovers, pre-enter
+- sync audio files and midi tracks through name comparison
+- arrange tracks in structure given by marker track
+- sync time and bpm data
+- each track can be setup to wait for a signal event to play and stop
+- midi data can be selected in GUI and used to send time data like start_time, end_time, event_duration, note_height, event_velocity
+- midi data can be used to drive bus effects (EQ, filters, Reverb, etc.) and have procedural ambiances according to levels (ex: enter hammam, error in input makes sound 'as in a womb')
+- midi data can be used to drive animation (animation duration, easings, keyframe insertion, keyframe value, etc.)
+- objects in game inherit a musical class that gives properties like accessing tempo and midi data, auto-injected animationPlayer, specific signals, custom DAW panel on editor clic, etc.

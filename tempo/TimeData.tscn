@@ -22,7 +22,7 @@ rect_min_size = Vector2( 110, 0 )
 rect_clip_content = true
 custom_constants/separation = 10
 
-[node name="LineEdit" type="LineEdit" parent="CenterContainer/VBoxContainer"]
+[node name="BPMInput" type="LineEdit" parent="CenterContainer/VBoxContainer"]
 margin_right = 129.0
 margin_bottom = 24.0
 text = "120"
@@ -35,13 +35,13 @@ margin_top = 34.0
 margin_right = 129.0
 margin_bottom = 58.0
 
-[node name="QuartSignature" type="LineEdit" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="BarSignature" type="LineEdit" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 margin_right = 58.0
 margin_bottom = 24.0
 text = "4"
 align = 2
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="SepSignature" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 margin_left = 62.0
 margin_top = 5.0
 margin_right = 67.0
@@ -114,7 +114,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 290.0
 margin_right = 129.0
 margin_bottom = 330.0
@@ -125,7 +125,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+[node name="TempoDisplay" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_top = 340.0
 margin_right = 129.0
 margin_bottom = 354.0
@@ -141,4 +141,4 @@ pitch_scale = 5.0
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_quart" to="." method="_on_check_quart_toggled"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_sixteenth" to="." method="_on_check_sixteenth_toggled"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_sixtyfourth" to="." method="_on_check_sixtyfourth_toggled"]
-[connection signal="toggled" from="CenterContainer/VBoxContainer/Button" to="." method="_on_Button_toggled"]
+[connection signal="toggled" from="CenterContainer/VBoxContainer/StartButton" to="." method="_on_Button_toggled"]
