@@ -4,7 +4,8 @@
 
 - [x] get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
 - [x] cleaner algorithm, better time signature consideration and data structure
-- [ ] refactor counting algorithm with new data structure, test OS.get_ticks_msec() again, maybe finer counting and less delay
+- [x] refactor counting algorithm with new data structure, test OS.get_ticks_msec() again, maybe finer counting and less delay
+- [ ] delta is too big in 60FPS, either limit the subdivisions to 1/16 or augment the FPS to 120 (even though there are still precision issues)
 - [ ] solve 1/32, 1/8, 1/2 measure counting issue
 - [ ] test for weird measures like 7/5 for ex
 - [ ] test for signatures changes while running, use yield to wait for next measure

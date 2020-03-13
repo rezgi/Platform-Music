@@ -26,3 +26,7 @@ config/icon="res://icon.png"
 [display]
 
 window/size/always_on_top=true
+
+[physics]
+
+common/physics_fps=120
