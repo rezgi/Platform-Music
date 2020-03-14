@@ -5,14 +5,42 @@
 - [x] get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
 - [x] cleaner algorithm, better time signature consideration and data structure
 - [x] refactor counting algorithm with new data structure, test OS.get_ticks_msec() again, maybe finer counting and less delay
-- [ ] delta is too big in 60FPS, either limit the subdivisions to 1/16 or augment the FPS to 120 (even though there are still precision issues)
-- [ ] solve 1/32, 1/8, 1/2 measure counting issue
-- [ ] test for weird measures like 7/5 for ex
+- [x] delta is too big in 60FPS, either limit the subdivisions to 1/16 or augment the FPS to 120 (even though there are still precision issues)
+- [x] solve 1/32, 1/8, 1/2 measure counting issue
+- [x] test for weird measures like 3/8 for ex
+- [x] small delay of nearly 0.002s, used it by adding it to delta_accumulator, made faster BPM work
+- [x] have 2 tempo displays : [1, 1/4, 1/16, 1/64] & [1/2, 1/8, 1/32, 1/128]
+
+### Tempo algorithm
+
+- [ ] Make metronome adapt to FPS & BPM : if 1/128 < delta, test 1/64, if still smaller, use 1/16 counting
+- [ ] Make better counting code since lots of repetitions and conditions with regular parameters
+- [ ] how to implement dotted time ? add secondary tempo to primary : prim[1] + sec[1] : 1/4 + 1/8
 - [ ] test for signatures changes while running, use yield to wait for next measure
 - [ ] additional methods : tempo to time, time to tempo
-- [ ] UI : toggle tool in 2D editor, add inspector settings ? 
+
+### UI
+
+- [ ] one field for time signature ?
+- [ ] make field text all selected when click on it
+- [ ] rename scene to 'Metronome' and give class_name & icon
+- [ ] delete old tempo.tscn & its script
+
+### Code design
+
+- [ ] Metronome dict is accessed globaly, pass it to funcs using it maybe
+- [ ] modulate script : signals / UI inputs / tempo. leave only main logic and exposed methods in here
+- [ ] gather all buttons & text input signals and combine them into one signal, procedural
+- [ ] a functional way to treat signals : central data that changes when a signal comes, loop to read from it
+
+### Use outside the scene
+
+- [ ] make UI togglable for integration into other scenes, or integrate into Inspector ? Both ?
+- [ ] display running time sync with tempo updates (1/64)
+- [ ] signal on each tick, send measure dict
+- [ ] design the API to use its methods
+- [ ] check if functional paradigm applied
 - [ ] send (signal) periodic tempo data to generate time-based data for external events and structures
-- [ ] small delay of nearly 0.002s, test with music layers if can cause problems
 
 ## Steps
 
