@@ -119,49 +119,55 @@ func durations_to_tempo_subdivisions(time_signature: Dictionary) -> Dictionary:
 	d.bar_length = time_signature.bar_length
 	d.bpm = time_signature.bpm
 	d.delay = 0
-	print(d)
 	
 	return d
 
 func count_tempo() -> void:
 	
-	# 128 is too small for _process which has a minimum of 0.016667 (delta) at 60 FPS
-	# use 128 only for time computation : 64th dotted / grid subdivisions
-	# delay problem : tempo isn't updated if < 110 && > 226 BPM because of delay size, delta is too big
-	# don't go under 16th when some BPM is reached ?
-	# Tried animationPlayer, buggy
-	# setting the project FPS to 120 instead of 60 reduces delta, ask about it
-	# FPS is currently set to 120, don't forget
-	# maybe take only intervals, like between 128 and 64 for example : if < 128, 128 + 1, if > 128 && < 64, 64 + 1
+	# setting the project FPS to 120 instead of 60 reduces delta, better precision
+	# add delay to delta_accumulator solves high BPM problem, max is 220 because of delta size
+	# when > 220BPM use 64th instead ? at 440 use 16th
+	# make better code to avoid repeating conditions and better flexibility
+	# still need to figure out 1/32, 1/8 and 1/2
+	# add buttons for missing clics 
 	
 	delta_accumulator += get_physics_process_delta_time()
 	var m = Metronome
 	
-	print("delta : ", get_physics_process_delta_time())
-	print("delta_acc : ", delta_accumulator)
-	print("128th : ", m.time.hundredtwentyeight)
-	print("64th : ", m.time.sixtyfourth)
-	print("32nd : ", m.time.thirtysecond)
-	print("16th : ", m.time.sixteenth)
-	print("--")
-	if delta_accumulator >= m.time.sixtyfourth:
-		m.time.delay = delta_accumulator - m.time.sixtyfourth
+	if delta_accumulator >= m.time.hundredtwentyeight:
+		m.time.delay = delta_accumulator - m.time.hundredtwentyeight
 #		print("delay : ", m.time.delay)
-		delta_accumulator = 0.0
-		m.tempo.sixtyfourth += 1
-		play_metronome(sixtyfourth_sound_on, 5, -10)
+		delta_accumulator = 0.0 + m.time.delay
+		m.tempo.hundredtwentyeight += 1
+#		play_metronome(sixtyfourth_sound_on, 14, -14)
 		
-		if m.tempo.sixtyfourth > 4.0:
+		if m.tempo.hundredtwentyeight > 2:
+			m.tempo.sixtyfourth += 1
+			m.tempo.hundredtwentyeight = 1
+			play_metronome(sixtyfourth_sound_on, 12, -12)
+		if m.tempo.sixtyfourth > 2:
+			m.tempo.thirtysecond += 1
+#			play_metronome(sixtyfourth_sound_on, 10, -10)
+		if m.tempo.sixtyfourth > 4:
 			m.tempo.sixteenth += 1
 			m.tempo.sixtyfourth = 1
-			play_metronome(sixteenth_sound_on, 4, -10)
-		if m.tempo.sixteenth > 4.0:
+			play_metronome(sixteenth_sound_on, 8, -8)
+		if m.tempo.thirtysecond > 4:
+			m.tempo.eight += 1
+			m.tempo.thirtysecond = 1
+#			play_metronome(sixteenth_sound_on, 6, -6)
+		if m.tempo.sixteenth > 4:
 			m.tempo.quart += 1
 			m.tempo.sixteenth = 1
-			play_metronome(quart_sound_on, 2, -5)
+			play_metronome(quart_sound_on, 4, -4)
+		if m.tempo.eight > 4:
+			m.tempo.half += 1
+			m.tempo.eight = 1
+#			play_metronome(quart_sound_on, 2, -2)
 		if m.tempo.quart > m.time.beats_per_measure:
 			m.tempo.full += 1
 			m.tempo.quart = 1
+			m.tempo.half = 1
 			play_metronome(measure_sound_on, 1, 0)
 
 ##
@@ -181,16 +187,18 @@ func stop_metronome() -> void:
 	Metronome.tempo = reset_measure_tempo()
 
 func reset_measure_tempo() -> Dictionary:
-	# primary tempo, maybe add another secondary tempo with other func
+	# primary tempo, maybe add another secondary (1/2, 1/8, 1/32, 1/128) tempo with other func
+	# base_4 : [1, 1/4, 1/16, 1/64]
+	# base_2 : [1/2, 1/8, 1/32, 1/128]
 	var d = {}
 	d.full = 1
-#	d.half = 1
+	d.half = 1
 	d.quart = 1
-#	d.eight = 1
+	d.eight = 1
 	d.sixteenth = 1
-#	d.thirtysecond = 1
+	d.thirtysecond = 1
 	d.sixtyfourth = 1
-#	d.hundredtwentyeight = 1
+	d.hundredtwentyeight = 1
 	return d
 
 func reset_measure_time() -> Dictionary:
