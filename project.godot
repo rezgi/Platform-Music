@@ -10,12 +10,12 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
-"class": "Tempo",
+"class": "Metronome",
 "language": "GDScript",
-"path": "res://tempo/tempo.gd"
+"path": "res://tempo/Metronome.gd"
 } ]
 _global_script_class_icons={
-"Tempo": "res://tempo/tempo.png"
+"Metronome": "res://tempo/tempo.png"
 }
 
 [application]

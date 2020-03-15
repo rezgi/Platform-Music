@@ -15,16 +15,17 @@
 
 - [ ] Make metronome adapt to FPS & BPM : if 1/128 < delta, test 1/64, if still smaller, use 1/16 counting
 - [ ] Make better counting code since lots of repetitions and conditions with regular parameters
-- [ ] how to implement dotted time ? add secondary tempo to primary : prim[1] + sec[1] : 1/4 + 1/8
-- [ ] test for signatures changes while running, use yield to wait for next measure
 - [ ] additional methods : tempo to time, time to tempo
+- [ ] implement dotted time, add secondary tempo to primary : prim[1] + sec[1] : 1/4 + 1/8
+- [ ] check if half note works with 3/4
+- [ ] put a set() to update metronome while it's running, for when changing signatures or BPM when counting
 
 ### UI
 
 - [ ] one field for time signature ?
 - [ ] make field text all selected when click on it
-- [ ] rename scene to 'Metronome' and give class_name & icon
-- [ ] delete old tempo.tscn & its script
+- [x] rename scene to 'Metronome' and give class_name & icon
+- [x] delete old tempo.tscn & its script
 
 ### Code design
 
@@ -35,12 +36,12 @@
 
 ### Use outside the scene
 
+- [ ] design the API to use its methods : start(), stop(), reset(), get()->dict, set()->dict, tempo_to_time()->float?, time_to_tempo()->array, dotted()->?
+- [ ] signal on each tick, send measure dict
+- [ ] check if functional paradigm applied
 - [ ] make UI togglable for integration into other scenes, or integrate into Inspector ? Both ?
 - [ ] display running time sync with tempo updates (1/64)
-- [ ] signal on each tick, send measure dict
-- [ ] design the API to use its methods
-- [ ] check if functional paradigm applied
-- [ ] send (signal) periodic tempo data to generate time-based data for external events and structures
+- [ ] test for signatures changes while running, use yield to wait for next measure
 
 ## Steps
 
@@ -52,17 +53,17 @@
   - analyse audio spectrums and overlay them with midi notes, 0db sections won't be displayed, audio sections will be automatically created for loops
   - SFX & overlays can be imported and have their own container type, not depending on sections but events
 - add layers to the grid : sections, markers, audio, midi, events
-  - sections : has id, can be looped, have general time according to total time and relative time for its own local time (starts at 0), has its own layers
+  - sections : music section, can be looped, have general time according to total time and relative time for its own local time (starts at 0), has its own layers
   - markers : can be edited (add, remove, rename, move), imported from midi markers, can have multiple marker layers, used for logic
   - audio : import full length audio from cubase, spectrum analysis & display, remove 0db sections, played only in given sections, marker logic, bus assign
-  - midi : import from midi JSON, can generate sections from markers, notes display (bars & curves), overlay with audio, selectable and logic menu
+  - midi : import from midi JSON, can generate sections from markers, notes display (bars & curves), track automations, overlay with audio, selectable and logic menu
   - events : from clicks on GUI, can be on marker/section/audio/midi start/end, generate signals/animation keys/easing curves/play loops
   - inputs : define where and how player inputs interact (tap, hold, direction, swipe)
   - animationPlayer keyframes overlay on midi/audio visuals, test import from blender dopeSheet, emit signals and call methods
 - level sections are assigned to music sections
   - from level are inherited level elements that are assigned to midi/audio events
   - level elements have their own focused music layers for editing animation and interaction
-  - can red updated conditions from outside main data (ex: is door open)
+  - can read updated conditions from outside main data (ex: is door open)
   - level is a scene, elements have their own scene with their inherited music layers
 - ex: clicking on a song section to generate a level section / clicking on an midi/audio track in section to generate a level element scene
 - tracks and sections can be routed to buses, signals, animationPlayers, nodeTree

@@ -1,4 +1,5 @@
 extends Node
+class_name Metronome, "res://tempo/tempo.png"
 
 """
 Tempo and Time algorithm, root of the rythmic design.
@@ -11,31 +12,6 @@ Tempo and Time algorithm, root of the rythmic design.
 - Methods : get & set tempo, tempo to time, time to tempo
 """
 
-# Tempo algorithm
-	# Make metronome adapt to FPS & BPM : if 1/128 < delta, test 1/64, if still smaller, use 1/16 counting
-	# have 2 tempo displays : [1, 1/4, 1/16, 1/64] & [1/2, 1/8, 1/32, 1/128]
-	# Make better counting code since lots of repetitions and conditions with regular parameters
-	# how to implement dotted time ? can add secondary tempo to primary : prim[1] + sec[1] : 1/4 + 1/8
-# Create a tempo <> time converter
-	# tempo to time needs to take into account signature, works only for 4/4 now
-# Cosmetic changes
-	# one field for time signature ?
-	# make field text all selected when click on it
-	# rename scene to 'Metronome' and give class_name & icon
-	# delete old tempo.tscn & its script
-# Code design
-	# Metronome dict is accessed globaly, pass it to funcs using it maybe
-	# modulate script : signals / UI inputs / tempo. leave only main logic and exposed methods in here
-	# gather all buttons & text input signals and combine them into one signal, procedural
-	# a functional way to treat signals : central data that changes when a signal comes, loop to read from it
-# Use outside the scene
-	# make UI togglable for integration into other scenes, or integrate into Inspector ? Both ?
-	# display running time sync with tempo updates (1/64)
-	# signal on each tick, send measure dict
-	# design the API to use its methods
-	# check if functional paradigm applied
-
-
 onready var bpm_text_input := $CenterContainer/VBoxContainer/BPMInput
 onready var bar_signature := $CenterContainer/VBoxContainer/HBoxContainer/BarSignature
 onready var beat_signature := $CenterContainer/VBoxContainer/HBoxContainer/BeatSignature
@@ -43,7 +19,35 @@ onready var btn := $CenterContainer/VBoxContainer/StartButton
 onready var label := $CenterContainer/VBoxContainer/TempoDisplay
 onready var clic := $AudioStreamPlayer
 
-var Metronome := {}
+var Metronome := {
+	tempo = {
+		full = 1,
+		half = 1,
+		quart = 1,
+		eight = 1,
+		sixteenth = 1,
+		thirtysecond = 1,
+		sixtyfourth = 1,
+		hundredtwentyeight = 1
+	},
+	time = {
+		full = 0.0,
+		half = 0.0,
+		quart = 0.0,
+		eight = 0.0,
+		sixteenth = 0.0,
+		thirtysecond = 0.0,
+		sixtyfourth = 0.0,
+		hundredtwentyeight = 0.0,
+		beat_duration = 0.0,
+		
+		beats_per_measure = 0,
+		bar_length = 0,
+		bpm = 0,
+		delay = 0.0
+	}
+}
+
 var delta_accumulator := 0.0
 var thirty_two_counter := 1
 var possible_beats := [4, 2, 8, 16, 32, 64]
@@ -57,14 +61,10 @@ var sixteenth_sound_on := false
 var thirtysecond_sound_on := false
 var sixtyfourth_sound_on := false
 
-##
 ## RUN
-##
 
 func _ready() -> void:
 	set_physics_process(false)
-	Metronome.time = reset_measure_time()
-	Metronome.tempo = reset_measure_tempo()
 	measure_sound_on = $CenterContainer/VBoxContainer/VBoxContainer/check_measure.pressed
 	quart_sound_on = $CenterContainer/VBoxContainer/VBoxContainer/check_quart.pressed
 
@@ -73,9 +73,7 @@ func _physics_process(_delta: float) -> void:
 		count_tempo()
 		label.text = "%s\n%s" % [str(tempo_to_array("primary")), str(tempo_to_array("secondary"))]
 
-##
-## INPUT LOGIC
-##
+## INPUT
 
 func check_inputs(time_input: Dictionary) -> bool:
 	var beat_is_ok = false
@@ -87,45 +85,39 @@ func check_inputs(time_input: Dictionary) -> bool:
 		return true
 	else: return false
 
-func getset_tempo_data(time_input) -> void:
-	# return Metronome dict
+func getset_tempo_data(time_input) -> Dictionary:
+	Metronome.tempo.beats_per_measure = time_input.bar_input
+	Metronome.tempo.bar_length = time_input.beat_input
+	Metronome.tempo.bpm = time_input.bpm_input
 	Metronome.time = durations_to_tempo_subdivisions(bpm_and_time_signature_to_durations(time_input))
+	return Metronome
 
-##
-## METRONOME ALGORITHM
-##
+## ALGORITHM
 
-func bpm_and_time_signature_to_durations(time_input: Dictionary) -> Dictionary:
-	var time_signature := {}
-	time_signature.beat_duration = (60.0 / float(time_input.bpm_input)) * (4.0 / float(time_input.beat_input))
-	time_signature.measure_duration = time_signature.beat_duration * time_input.bar_input
-	time_signature.beats_per_measure = time_input.bar_input
-	time_signature.bar_length = time_input.beat_input
-	time_signature.bpm = time_input.bpm_input
-	return time_signature
+func bpm_and_time_signature_to_durations(time_input: Dictionary) -> float:
+	return (60.0 / float(time_input.bpm_input)) * (4.0 / float(time_input.beat_input))
 
-func durations_to_tempo_subdivisions(time_signature: Dictionary) -> Dictionary:
-	# half needs more precise work (3/4 problem)
+func durations_to_tempo_subdivisions(beat_duration: float) -> Dictionary:
 	var d = {}
-	d.full = time_signature.measure_duration
-	d.half = time_signature.beat_duration * 2
-	d.quart = time_signature.beat_duration
+	d.full = beat_duration * Metronome.tempo.beats_per_measure
+	d.half = beat_duration * 2
+	d.quart = beat_duration
 	d.eight = d.quart / 2.0
 	d.sixteenth = d.eight / 2.0
 	d.thirtysecond = d.sixteenth / 2.0
 	d.sixtyfourth = d.thirtysecond / 2.0
 	d.hundredtwentyeight = d.sixtyfourth / 2.0
-	
-	d.beat_duration = time_signature.beat_duration
-	d.beats_per_measure = time_signature.beats_per_measure
-	d.bar_length = time_signature.bar_length
-	d.bpm = time_signature.bpm
-	d.delay = 0
-	
+	d.beat_duration = beat_duration
 	return d
 
 func count_tempo() -> void:
-	# make better code to avoid repeating conditions and better flexibility
+	# adapt to FPS & BPM : if 1/128 < delta, test 1/64, if still smaller, use 1/16 counting
+	# get m.time smallest subdivision after checking FPS
+	# get m.time.delay
+	# then use only m.tempo in function
+	# add for each subdivision its threshold and play arguments
+	# add smallest name in m.tempo
+	# how to do with thirty_two_counter ?
 	
 	delta_accumulator += get_physics_process_delta_time()
 	var m = Metronome
@@ -137,6 +129,19 @@ func count_tempo() -> void:
 		
 		m.tempo.hundredtwentyeight += 1
 		thirty_two_counter += 1
+		
+		# for i in subdivision:
+			# count(subdivision):
+			# if subdivision[i].counter > subdivision[i].threshold:
+			#	subdivision[i + 2].counter += 1
+			#	subdivision[i].counter = 1
+			#	play_metronome(subdivision[i].play)
+		
+		# if delta < m.time.hundredtwentyeight:
+		#	smallest = m.time.hundredtwentyeight
+		# elif delta < m.time.sixtyfourth:
+		#	smallest = m.time.sixtyfourth
+		# else: smallest = m.time.sixteenth
 		
 		if m.tempo.hundredtwentyeight > 2:
 			m.tempo.sixtyfourth += 1
@@ -162,15 +167,13 @@ func count_tempo() -> void:
 			m.tempo.half += 1
 			m.tempo.eight = 1
 			play_metronome(half_sound_on, 2, -2)
-		if m.tempo.quart > m.time.beats_per_measure:
+		if m.tempo.quart > m.tempo.beats_per_measure:
 			m.tempo.full += 1
 			m.tempo.quart = 1
 			m.tempo.half = 1
 			play_metronome(measure_sound_on, 1, 0)
 
-##
-# METRONOME TOOLS
-##
+# TOOLS
 
 func start_metronome() -> void:
 	metronome_is_on = true
@@ -181,44 +184,17 @@ func start_metronome() -> void:
 func stop_metronome() -> void:
 	metronome_is_on = false
 	set_physics_process(false)
-	Metronome.time = reset_measure_time()
-	Metronome.tempo = reset_measure_tempo()
+	reset_metronome()
 
-func reset_measure_tempo() -> Dictionary:
-	# primary tempo, maybe add another secondary (1/2, 1/8, 1/32, 1/128) tempo with other func
-	# base_4 : [1, 1/4, 1/16, 1/64]
-	# base_2 : [1/2, 1/8, 1/32, 1/128]
-	var d = {}
-	d.full = 1
-	d.half = 1
-	d.quart = 1
-	d.eight = 1
-	d.sixteenth = 1
-	d.thirtysecond = 1
-	d.sixtyfourth = 1
-	d.hundredtwentyeight = 1
-	return d
-
-func reset_measure_time() -> Dictionary:
-	var d = {}
-	
-	d.full = 0
-	d.half = 0
-	d.quart = 0
-	d.eight = 0
-	d.sixteenth = 0
-	d.thirtysecond = 0
-	d.sixtyfourth = 0
-	d.hundredtwentyeight = 0
-	
-	d.beat_signature = 0
-	d.bar_signature = 0
-	d.bpm = 0
-	
-	return d
+func reset_metronome() -> void:
+	for key in Metronome.tempo:
+		Metronome.tempo[key] = 1
+	for key in Metronome.time:
+		Metronome.time[key] = 0.0
 
 func play_metronome(is_on: bool, pitch: float, volume: float) -> void:
 	# take an named enum or dict for clearer arguments
+	# move this function to the UI section and module
 	if is_on:
 		clic.pitch_scale = pitch
 		clic.volume_db = volume
@@ -252,9 +228,7 @@ func tempo_to_time(tempo_array: Array) -> float:
 	var thirt = (tempo_array[3] - 1) * Metronome.time.sixtyfourth
 	return bar + quart + sixt + thirt
 
-##
-# UI LOGIC
-##
+# UI
 
 func _on_Button_toggled(button_pressed: bool) -> void:
 	if button_pressed:
@@ -266,6 +240,7 @@ func _on_Button_toggled(button_pressed: bool) -> void:
 		}
 		
 		if check_inputs(time_input):
+# warning-ignore:return_value_discarded
 			getset_tempo_data(time_input)
 			start_metronome()
 			btn.text = "Stop"
