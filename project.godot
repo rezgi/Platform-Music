@@ -15,7 +15,7 @@ _global_script_classes=[ {
 "path": "res://tempo/Metronome.gd"
 } ]
 _global_script_class_icons={
-"Metronome": "res://tempo/tempo.png"
+"Metronome": "res://tempo/metronome.png"
 }
 
 [application]

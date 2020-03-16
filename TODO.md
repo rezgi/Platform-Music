@@ -13,8 +13,14 @@
 
 ### Tempo algorithm
 
-- [ ] Make metronome adapt to FPS & BPM : if 1/128 < delta, test 1/64, if still smaller, use 1/16 counting
-- [ ] Make better counting code since lots of repetitions and conditions with regular parameters
+- [x] refactor Metronome dictionary : m.subdivisions {subdivision_type{duration,tempo_count,threshold}} / m.info
+- [x] make metronome adapt to FPS & BPM : if 1/128 < delta, test 1/64, if still smaller, use 1/16 counting
+- [ ] update counting code with new data structure and looping function
+- [ ] create sound settings dict {is_on, pitch, volume} in each subdivision dict
+- [ ] adapt reset function to new data structure
+- [ ] data check in button function, adapt to generic start() method
+- [ ] set() doesn't check for input integrity, will be easier to adapt without button logic, make return bool
+- [ ] make a generic time_input getter that returns dictionary (bpm, beats_per_bar, beat_length)
 - [ ] additional methods : tempo to time, time to tempo
 - [ ] implement dotted time, add secondary tempo to primary : prim[1] + sec[1] : 1/4 + 1/8
 - [ ] check if half note works with 3/4
@@ -29,7 +35,7 @@
 
 ### Code design
 
-- [ ] Metronome dict is accessed globaly, pass it to funcs using it maybe
+- [ ] Metronome dict is accessed globaly, pass it to funcs using it, think about how data will be used outside with redux design
 - [ ] modulate script : signals / UI inputs / tempo. leave only main logic and exposed methods in here
 - [ ] gather all buttons & text input signals and combine them into one signal, procedural
 - [ ] a functional way to treat signals : central data that changes when a signal comes, loop to read from it
