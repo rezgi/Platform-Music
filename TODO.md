@@ -2,6 +2,8 @@
 
 ## 0.2
 
+### Tempo algorithm
+
 - [x] get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
 - [x] cleaner algorithm, better time signature consideration and data structure
 - [x] refactor counting algorithm with new data structure, test OS.get_ticks_msec() again, maybe finer counting and less delay
@@ -10,33 +12,37 @@
 - [x] test for weird measures like 3/8 for ex
 - [x] small delay of nearly 0.002s, used it by adding it to delta_accumulator, made faster BPM work
 - [x] have 2 tempo displays : [1, 1/4, 1/16, 1/64] & [1/2, 1/8, 1/32, 1/128]
-
-### Tempo algorithm
-
 - [x] refactor Metronome dictionary : m.subdivisions {subdivision_type{duration,tempo_count,threshold}} / m.info
 - [x] make metronome adapt to FPS & BPM : if 1/128 < delta, test 1/64, if still smaller, use 1/16 counting
-- [ ] update counting code with new data structure and looping function
-- [ ] create sound settings dict {is_on, pitch, volume} in each subdivision dict
+- [x] update counting code with new data structure and looping function
+- [x] create sound settings dict {is_on, pitch, volume} in each subdivision dict
+- [x] update button signal functions to change bool within metronome dict
+- [x] check if half note works with 3/4
+- [ ] half shifts every 3 measures when using odd bars
+- [ ] 32 bugs on high BPM
+- [ ] 64th sound not working
 - [ ] adapt reset function to new data structure
 - [ ] data check in button function, adapt to generic start() method
 - [ ] set() doesn't check for input integrity, will be easier to adapt without button logic, make return bool
 - [ ] make a generic time_input getter that returns dictionary (bpm, beats_per_bar, beat_length)
 - [ ] additional methods : tempo to time, time to tempo
 - [ ] implement dotted time, add secondary tempo to primary : prim[1] + sec[1] : 1/4 + 1/8
-- [ ] check if half note works with 3/4
 - [ ] put a set() to update metronome while it's running, for when changing signatures or BPM when counting
 
 ### UI
 
-- [ ] one field for time signature ?
-- [ ] make field text all selected when click on it
 - [x] rename scene to 'Metronome' and give class_name & icon
 - [x] delete old tempo.tscn & its script
+- [x] delete audio files, don't need for the time being
+- [ ] one field for time signature ?
+- [ ] make field text all selected when click on it
+- [ ] separate UI and metronome logic
 
 ### Code design
 
-- [ ] Metronome dict is accessed globaly, pass it to funcs using it, think about how data will be used outside with redux design
+- [ ] Metronome dict put into external script. Still understanding how instanciating works to be able to reset the dict
 - [ ] modulate script : signals / UI inputs / tempo. leave only main logic and exposed methods in here
+- [ ] Metronome dict is accessed globaly, pass it to funcs using it, think about how data will be used outside with redux design
 - [ ] gather all buttons & text input signals and combine them into one signal, procedural
 - [ ] a functional way to treat signals : central data that changes when a signal comes, loop to read from it
 
@@ -94,7 +100,6 @@
   - on song changed signal, error : emit_signal: Error calling method from signal 'song_changed': Method expected 2 arguments, but called with 1..
   - how to access vars like current_song, is_playing, etc. ?
   - strange accumulation of bars when 2 songs played, not 1 > 2 then 3 > 4 or 1 > 2 for second song, but 2 > 3
-
 - decision : not use MDM, game mechanics need way more refined musical data imported from DAW. Custom tool to make
 - Tempo tool import from Onna project
 - Refactoring aiming for use in DAW tool :

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://tempo/Metronome.gd" type="Script" id=1]
-[ext_resource path="res://tempo/metronome_01.ogg" type="AudioStream" id=2]
+[ext_resource path="res://metronome/Metronome.gd" type="Script" id=1]
+[ext_resource path="res://metronome/metronome_01.ogg" type="AudioStream" id=2]
+[ext_resource path="res://metronome/metronome_default_dictionary.gd" type="Script" id=3]
 
 [node name="Metronome" type="Node"]
 script = ExtResource( 1 )
@@ -54,7 +55,7 @@ margin_right = 129.0
 margin_bottom = 24.0
 text = "4"
 
-[node name="HSeparator2" type="HSeparator" parent="CenterContainer/VBoxContainer"]
+[node name="HSeparator_01" type="HSeparator" parent="CenterContainer/VBoxContainer"]
 margin_top = 68.0
 margin_right = 129.0
 margin_bottom = 78.0
@@ -123,7 +124,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/VBoxContainer"]
+[node name="HSeparator_02" type="HSeparator" parent="CenterContainer/VBoxContainer"]
 margin_top = 402.0
 margin_right = 129.0
 margin_bottom = 412.0
@@ -153,8 +154,12 @@ autowrap = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
-volume_db = -10.0
-pitch_scale = 5.0
+pitch_scale = 6.0
+
+[node name="Modules" type="Node" parent="."]
+
+[node name="metronome_default_dictionary" type="Node" parent="Modules"]
+script = ExtResource( 3 )
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_measure" to="." method="_on_check_measure_toggled"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_half" to="." method="_on_check_half_toggled"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/check_quart" to="." method="_on_check_quart_toggled"]

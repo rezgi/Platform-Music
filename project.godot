@@ -12,10 +12,10 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Metronome",
 "language": "GDScript",
-"path": "res://tempo/Metronome.gd"
+"path": "res://metronome/Metronome.gd"
 } ]
 _global_script_class_icons={
-"Metronome": "res://tempo/metronome.png"
+"Metronome": "res://metronome/metronome.png"
 }
 
 [application]
