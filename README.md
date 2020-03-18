@@ -1,59 +1,30 @@
-# Platform-Music
-Experiments with procedural music and platform mechanics in Godot game engine
+# Musilogy
+Creating a tool for musical logic in Godot game engine
 
-## Experiments
+[TODO](TODO.md)
 
-- Music layering and interaction with Godot Mixing Desk
-- MIDI (external JSON converter, maybe extend godot-midi-player) parsing, display, logic and editor interface
-- Blender to Godot import workflow with godot-game-tools / collada-exporter / godot-blender-exporter
-- Procedural meshes, 2D SVG shapes and 3D basic objects
-- Circular levels with physics and collisions
-- Creation of plugin interfaces within the editor
+## Versions
 
-## Goals
+- 0.3 (19/03/2020 > ?):
+  - applying functional paradigm and UDF
+- 0.2 (11/03/2020 > 18/03/2020): 
+  - made a working but lacking metronome (heavy data structure, counting bugs, physics based, confusing state machine base)
+- 0.1 (06/03/2020 > 10/03/2020):
+  - tried MDM and understood the need for a custom tool that goes deeper into linking music data and game logic
 
-### For the brain :
-- Procedural music logic ready for game mechanics
-- Usable and visible MIDI data structures
-- Good understanding of the 3D import workflow from Blender to Godot
-- Working circular platform levels and elements
+---
 
-### For the game :
-- Overall music logic architecture usable for game mechanics
-- Usable interface in editor to link musical events and game mechanics
-- Working imported assets and circular design
-- Design a tool that encompasses all experimented tools into a musical game creator
-- Basic musical platform gameplay
+## Audio
 
-## Tool
+- Metronome with time signature
+- Musical GUI to sync audio data with game logic
 
-- Music data creation : 
-    - bulk audio files import to structure in editor
-    - MIDI file conversion and parsing to data structure
-- Music data structure :
-    - audio layers ready to use
-    - tempo data synced with temporal data
-    - MIDI events synced with audio layers and tempo
-    - events and logic structured for game mechanics
-- Asset import :
-    - defined import workflow from Blender to Godot
-    - mesh generation from imported assets
-    - generate shapes, normals, collisions, physics and occlusion
-- Music logic interface :
-    - editor plugin to display music and MIDI data synced with time
-    - display layers : audio waveform + midi events (selectable + settings) + animationPlayer or animationTree keyframes or custom durations or easings
-    - game clock, logic and events in sync with music tempo
-    - logic editor for scenario, scenes, level, objects and player
-- Platform logic
-    - adapted physics and interactions to music and circular design
-    - animations synced with music
-    - level structure synced to music structure and logic
+## Graphic
 
-Overall, have a full music visual game editor that :
-- imports music data (audio & midi) and assets (3D and 2D objects)
-- generates data in the engine through music events (DAW-like with clickable and editable elements) and visible meshes
-- links them together in the game logic through events and level building
-- allows natural game and level design in the editor
+- Blender and/or SVG mesh import
+- Working curved platforms (normals, collisions, occlusion, gravity, movement, rotation)
 
+## Architecture
 
-![Good Luck !](https://media.giphy.com/media/Y2b0W3I2UnNiVuYhVc/giphy.gif "Good Luck !!")
+- Functional paradigm & Unidirectional Data Flow (UDF) through Central Data Structure (CDS) and signals
+- Link music data (tempo, audio sections, MIDI events) and game elements (signals, animations, properties)

@@ -1,8 +1,109 @@
 # TODO
 
-## 0.2
+## 0.3
+Switch from state machine to functional paradigm
 
-### Tempo algorithm
+- [ ] create a function that converts time to tempo
+- [ ] start OS.time at start of metronome, then compare time passed and convert to tempo
+- [ ] use already made signature conversion functions
+- [ ] refactor data structure (named Central Data Structure : CDS)
+- [ ] separate from the start : metronome logic / UI / data / tools
+- [ ] set engine to 60FPS
+- [ ] make only pure functions and pass the data tree
+- [ ] should tempo data be an array ? maybe simpler to pass around, dict can be returned in a function
+- [ ] have one signal fired when UI elements change ? gather them and at each received signal fires one general signal to tempo
+- [ ] try redux (unilateral data flow) paradigm when algorithm works to link UI / counting / signals
+
+### Functions
+
+- [ ] time_to_tempo(time:float) -> dict
+- [ ] get_tempo_array(dict) takes 0 (default) for primary [1/1, 1/4, 1/16, 1/64] and 1 for secondary [1/2, 1/8, 1/32, 1/128]
+- [ ] get_tempo_dict(time, signature_input) returns full tempo dictionary from measure to 1/128 + time signature
+- [ ] get_signature_input(bpm, bar, beat) -> single time_signature dict
+- [ ] set_tempo(time_signature: BPM, bar, beat) -> tempo dict result
+- [ ] tempo_to_time(array or dict) -> float ? dict ? define how time will be used, usec, msec
+- [ ] display_tempo() takes 0 (default) for primary and 1 for secondary, return string
+- [ ] reset_tempo() -> default tempo dict
+- [ ] check_input(signature_input) -> bool, used in set()
+- [ ] to_dotted(tempo_subdivision_duration) -> float, adds half of the given note
+- [ ] find_smallest_subdivision(delta, tempo) -> int, gives array index of smallest subdivision duration
+- [ ] compensate_delay(delta, accumulator) -> float, computes actual delay and corrects given duration to wait for
+
+---
+
+## Roadmap
+
+- (actual) full metronome that converts time and tempo in a single data structure and adapts to FPS
+- unilateral dataflow (UDF) experimenting and connect metronome
+- input auto-connector : scan scene, select UI inputs and connect chosen signals, gather signals into one that's connected to UDF
+- tempo grid :
+  - reads & displays tempo UDF
+  - time cursor
+  - bpm subdivisions
+  - play, pause, stop
+  - total time duration
+  - zoom in & out
+  - one audio layer test
+- audio project creator / importer
+  - bulk audio import : auto-creation, naming and injection of audio nodes
+  - read and parse midi JSON that will set the grid layers, duration & markers
+  - create midi tracks and display notes
+  - audio tracks will be compared to midi track names, name them accordingly and sync them on the same layers
+  - analyse audio spectrums and overlay them with midi notes, 0db sections won't be displayed, audio sections will be automatically created for loops
+  - SFX & overlays can be imported and have their own container type, not depending on sections but events
+- grid layers :
+  - sections : 
+    - music section
+    - can be looped
+    - have general time according to total time and relative time for its own local time (starts at 0)
+    - has its own layers
+  - markers :
+    - can be edited (add, remove, rename, move) ?
+    - imported from midi markers
+    - multiple marker layers ?
+    - used for logic
+  - audio :
+    - bulk import of audio files
+    - import full length audio from cubase
+    - spectrum analysis & display
+    - remove 0db sections
+    - played only in given sections
+    - marker logic
+    - bus assign
+    - procedural fades, punch-in, etc.
+  - midi : 
+    - import from midi JSON
+    - check midi_player by arlez for integration (parse to dict, play)
+    - generate sections from markers
+    - notes display (in bars or computed curves) with exportable values, in time, out time, durations
+    - track automations
+    - overlay with audio waveform
+    - selectable for logic menu
+  - events : 
+    - created by clicks on GUI
+    - can be on marker / section / audio / midi start / end
+    - generate signals / animation keys / easing curves / play loops
+    - animationPlayer keyframes overlay on midi / audio visuals
+    - test import from blender dopeSheet
+  - inputs : 
+    - define where and how player inputs interact (tap, hold, direction, swipe)
+    - emit signals and call methods
+- level sections are assigned to music sections
+  - from level are inherited level elements that are assigned to midi/audio events
+  - level elements have their own focused music layers for editing animation and interaction
+  - can read updated conditions from outside main data (ex: is door open)
+  - level is a scene, elements have their own scene with their inherited music layers
+- use cases :
+  - clicking on a song section to generate a level section
+  - clicking on an midi / audio track in section to generate a level element scene
+  - tracks and sections can be routed to buses, signals, animationPlayers, nodeTree
+- misc :
+  - nodal UI to manage interactions, data communication, signal & events
+
+---
+
+## 0.2
+Working metronome with state machine paradigm
 
 - [x] get a clean tempo data structure with subdivisions in bpm and time (1/16 may be enough, see if 1/32 or 1/64 is doable in another way)
 - [x] cleaner algorithm, better time signature consideration and data structure
@@ -28,26 +129,17 @@
 - [ ] additional methods : tempo to time, time to tempo
 - [ ] implement dotted time, add secondary tempo to primary : prim[1] + sec[1] : 1/4 + 1/8
 - [ ] put a set() to update metronome while it's running, for when changing signatures or BPM when counting
-
-### UI
-
 - [x] rename scene to 'Metronome' and give class_name & icon
 - [x] delete old tempo.tscn & its script
 - [x] delete audio files, don't need for the time being
 - [ ] one field for time signature ?
 - [ ] make field text all selected when click on it
 - [ ] separate UI and metronome logic
-
-### Code design
-
 - [ ] Metronome dict put into external script. Still understanding how instanciating works to be able to reset the dict
 - [ ] modulate script : signals / UI inputs / tempo. leave only main logic and exposed methods in here
 - [ ] Metronome dict is accessed globaly, pass it to funcs using it, think about how data will be used outside with redux design
 - [ ] gather all buttons & text input signals and combine them into one signal, procedural
 - [ ] a functional way to treat signals : central data that changes when a signal comes, loop to read from it
-
-### Use outside the scene
-
 - [ ] design the API to use its methods : start(), stop(), reset(), get()->dict, set()->dict, tempo_to_time()->float?, time_to_tempo()->array, dotted()->?
 - [ ] signal on each tick, send measure dict
 - [ ] check if functional paradigm applied
@@ -55,34 +147,8 @@
 - [ ] display running time sync with tempo updates (1/64)
 - [ ] test for signatures changes while running, use yield to wait for next measure
 
-## Steps
-
-- design a tempo grid that will sync and display tempo data : time cursor, bpm subdivisions, play, pause, stop, total time duration, zoom in & out
-- create an audio project creator/importer
-  - read and parse midi JSON that will set the grid layers, duration & markers
-  - create midi tracks and display notes
-  - bulk import of audio tracks that will compare with midi tracks, name them accordingly, sync them on the same layers and create audioStreams
-  - analyse audio spectrums and overlay them with midi notes, 0db sections won't be displayed, audio sections will be automatically created for loops
-  - SFX & overlays can be imported and have their own container type, not depending on sections but events
-- add layers to the grid : sections, markers, audio, midi, events
-  - sections : music section, can be looped, have general time according to total time and relative time for its own local time (starts at 0), has its own layers
-  - markers : can be edited (add, remove, rename, move), imported from midi markers, can have multiple marker layers, used for logic
-  - audio : import full length audio from cubase, spectrum analysis & display, remove 0db sections, played only in given sections, marker logic, bus assign
-  - midi : import from midi JSON, can generate sections from markers, notes display (bars & curves), track automations, overlay with audio, selectable and logic menu
-  - events : from clicks on GUI, can be on marker/section/audio/midi start/end, generate signals/animation keys/easing curves/play loops
-  - inputs : define where and how player inputs interact (tap, hold, direction, swipe)
-  - animationPlayer keyframes overlay on midi/audio visuals, test import from blender dopeSheet, emit signals and call methods
-- level sections are assigned to music sections
-  - from level are inherited level elements that are assigned to midi/audio events
-  - level elements have their own focused music layers for editing animation and interaction
-  - can read updated conditions from outside main data (ex: is door open)
-  - level is a scene, elements have their own scene with their inherited music layers
-- ex: clicking on a song section to generate a level section / clicking on an midi/audio track in section to generate a level element scene
-- tracks and sections can be routed to buses, signals, animationPlayers, nodeTree
-- nodal UI to manage interactions, data communication, signal & events
-- custom musical logic editor name tentatives : Musilogy, goDAW, godAudio, audioLogic
-
 ## 0.1
+MDM Experiment
 
 - test MDM with basic music layers
 - check if metronome can be useful, import if from previous project (onna) and sync it to MDM / check synchronisation of metronome tick and MDM tick
@@ -106,19 +172,3 @@
   - more measure subdivision : add up to 1/16th note length
   - better tempo naming : section, whole (1), half (1/2), half_dot (1/2.), quarter (1/4), quarter_dot (1/4.), eight (1/8), eight_dot (1/8.), sixteenth (1/16), sixteenth_dot (1/16.)
   - check latency, use delta instead of timer ? no, try OS.get_ticks_msec() until it reaches the given bpm2time. No, get back to timer
-
-## Tool features & ideas
-
-- export cubase marker track in midi file and lay out audio files and midi data according to markers
-- how to export audio files chunks from Cubase ? Need to check XML export format and music notation maybe / will export full length audio and cut in game
-- each audio / midi data will have its local and global time
-- bulk load audio files and name / import them in scene audioPlayers
-- check how to manage layering, fades, rollovers, pre-enter
-- sync audio files and midi tracks through name comparison
-- arrange tracks in structure given by marker track
-- sync time and bpm data
-- each track can be setup to wait for a signal event to play and stop
-- midi data can be selected in GUI and used to send time data like start_time, end_time, event_duration, note_height, event_velocity
-- midi data can be used to drive bus effects (EQ, filters, Reverb, etc.) and have procedural ambiances according to levels (ex: enter hammam, error in input makes sound 'as in a womb')
-- midi data can be used to drive animation (animation duration, easings, keyframe insertion, keyframe value, etc.)
-- objects in game inherit a musical class that gives properties like accessing tempo and midi data, auto-injected animationPlayer, specific signals, custom DAW panel on editor clic, etc.

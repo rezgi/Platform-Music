@@ -39,7 +39,7 @@ func _physics_process(_delta: float) -> void:
 func check_inputs(time_input: Dictionary) -> bool:
 	var check_status = false
 	
-	# array of possible beat signature types, power of 2's
+	# i = 2 then i * 2 while i <= 64
 	for i in [4, 2, 8, 16, 32, 64]:
 		if time_input.beat_length == i: check_status = true
 	
@@ -55,78 +55,64 @@ func beat_duration_to_subdivisions_duration(beat_duration: float) -> void:
 	d.full.duration = beat_duration * Metronome.info.beats_per_bar
 	d.half.duration = beat_duration * 2
 	d.quart.duration = beat_duration
-	d.quart.threshold = Metronome.info.beats_per_bar
+#	d.quart.threshold = Metronome.info.beats_per_bar
 	d.eight.duration = d.quart.duration / 2.0
 	d.sixteenth.duration = d.eight.duration / 2.0
 	d.thirtysecond.duration = d.sixteenth.duration / 2.0
 	d.sixtyfourth.duration = d.thirtysecond.duration / 2.0
 	d.hundredtwentyeight.duration = d.sixtyfourth.duration / 2.0
 
-func set_smallest_subdivision() -> void:
-	if Metronome.subdivisions.hundredtwentyeight.duration >= Metronome.info.delta:
-		Metronome.info.smallest_subdivision = 7
-		Metronome.info.secondary_index = 5
-		print("128")
-	elif Metronome.subdivisions.sixtyfourth.duration >= Metronome.info.delta:
-		Metronome.info.smallest_subdivision = 6
-		Metronome.info.secondary_index = 5
-		print("64")
-	elif Metronome.subdivisions.sixteenth.duration >= Metronome.info.delta:
-		Metronome.info.smallest_subdivision = 4
-		Metronome.info.secondary_index = 3
-		print("16")
+func set_smallest_subdivision() -> int:
+	var counter := 0
+	for key in Metronome.subdivisions.values():
+		if key.duration >= get_physics_process_delta_time(): break
+		else: counter += 1
+	return counter
 
 func set_tempo_data(time_input) -> void:
 	Metronome.info.bpm = time_input.bpm
 	Metronome.info.beats_per_bar = time_input.beats_per_bar
 	Metronome.info.beat_length = str("1/", time_input.beat_length)
-	Metronome.info.delta = get_physics_process_delta_time()
 	beat_duration_to_subdivisions_duration(time_signature_to_beat_duration(time_input))
-	set_smallest_subdivision()
+	Metronome.info.smallest_subdivision = set_smallest_subdivision()
 
 # COUNTER
+
+func printer(i)->void:
+	print("i = %s : %s : %s" % [i, Metronome.subdivisions.keys()[i], Metronome.subdivisions.values()[i]])
 
 func count_tempo() -> void:
 	
 	var m = Metronome.info
 	var subdivisions = Metronome.subdivisions.values()
 	var smallest_subdivision = subdivisions[m.smallest_subdivision]
-	var i = m.smallest_subdivision
-	m.delta_accumulator += m.delta
+
+	m.delta_accumulator += get_physics_process_delta_time()
 	
 	if m.delta_accumulator >= smallest_subdivision.duration:
 		
 		m.delay = m.delta_accumulator - smallest_subdivision.duration
 		m.delta_accumulator = 0.0 + m.delay
 		smallest_subdivision.tempo_count += 1
-		m.secondary_counter += 1
-
-		while i >= 2:
-			
-			if subdivisions[i].tempo_count > subdivisions[i].threshold:
-				var next_index := 0
-				if i == 2:
-					next_index = 0
-					subdivisions[1].tempo_count = 1
-				elif i == 7: next_index = 6
-				else: next_index = i - 2
-				
-				subdivisions[next_index].tempo_count += 1
+		var i = m.smallest_subdivision
+#		print("------")
+		
+		while i < subdivisions.size() - 1:
+#			printer(i)
+			if i == m.smallest_subdivision and subdivisions[i].tempo_count > 2:
+				subdivisions[i + 1].tempo_count += 1
 				subdivisions[i].tempo_count = 1
-				
-				if i != 7 and subdivisions[next_index].sound.on:
-					play_metronome(subdivisions[next_index].sound)
-			
-			if m.smallest_subdivision > m.secondary_index and \
-			m.secondary_counter > subdivisions[m.secondary_index].threshold:
-				
-				subdivisions[m.secondary_index].tempo_count += 1
-				m.secondary_counter = 1
-				
-				if subdivisions[m.secondary_index].sound.on :
-					play_metronome(subdivisions[m.secondary_index].sound)
-			
-			i -= 1
+			if i == m.smallest_subdivision + 1 and subdivisions[i].tempo_count > 2:
+				subdivisions[i + 1].tempo_count += 1
+			if i == subdivisions.size() - 2 and subdivisions[i].tempo_count >= floor(m.beats_per_bar / 2):
+				subdivisions[i].tempo_count = 1
+			if i == subdivisions.size() - 1 and subdivisions[i].tempo_count > m.beats_per_bar:
+				subdivisions[i].tempo_count += 1
+				subdivisions[i - 2].tempo_count = 1
+			if subdivisions[i].tempo_count > 2:
+				subdivisions[i + 1].tempo_count += 1
+				subdivisions[i - 1].tempo_count = 1
+			i += 1
 
 # METHODS
 
@@ -154,17 +140,17 @@ func tempo_to_array(type: String) -> Array:
 	var array := []
 	if type == "primary":
 		array = [
-			Metronome.subdivisions.values()[0].tempo_count,
-			Metronome.subdivisions.values()[2].tempo_count,
-			Metronome.subdivisions.values()[4].tempo_count,
-			Metronome.subdivisions.values()[6].tempo_count
+			Metronome.subdivisions.values()[7].tempo_count,
+			Metronome.subdivisions.values()[5].tempo_count,
+			Metronome.subdivisions.values()[3].tempo_count,
+			Metronome.subdivisions.values()[1].tempo_count
 		]
 	elif type == "secondary":
 		array = [
-			Metronome.subdivisions.values()[1].tempo_count,
-			Metronome.subdivisions.values()[3].tempo_count,
-			Metronome.subdivisions.values()[5].tempo_count,
-			Metronome.subdivisions.values()[7].tempo_count
+			Metronome.subdivisions.values()[6].tempo_count,
+			Metronome.subdivisions.values()[4].tempo_count,
+			Metronome.subdivisions.values()[2].tempo_count,
+			Metronome.subdivisions.values()[0].tempo_count
 		]
 	return array
 
@@ -225,3 +211,43 @@ func _on_check_thirtytwo_toggled(button_pressed: bool) -> void:
 
 func _on_check_sixtyfourth_toggled(button_pressed: bool) -> void:
 	Metronome.subdivisions.sixtyfourth.sound.on = button_pressed
+
+#var m = Metronome.info
+#	var subdivisions = Metronome.subdivisions.values()
+#	var smallest_subdivision = subdivisions[m.smallest_subdivision]
+#	var i = m.smallest_subdivision
+#	m.delta_accumulator += get_physics_process_delta_time()
+#
+#	if m.delta_accumulator >= smallest_subdivision.duration:
+#
+#		m.delay = m.delta_accumulator - smallest_subdivision.duration
+#		m.delta_accumulator = 0.0 + m.delay
+#		smallest_subdivision.tempo_count += 1
+#		m.secondary_counter += 1
+#
+#		while i >= 2:
+#
+#			if subdivisions[i].tempo_count > subdivisions[i].threshold:
+#				var next_index := 0
+#				if i == 2:
+#					next_index = 0
+#					subdivisions[1].tempo_count = 1
+#				elif i == 7: next_index = 6
+#				else: next_index = i - 2
+#
+#				subdivisions[next_index].tempo_count += 1
+#				subdivisions[i].tempo_count = 1
+#
+#				if i != 7 and subdivisions[next_index].sound.on:
+#					play_metronome(subdivisions[next_index].sound)
+#
+#			if m.smallest_subdivision > m.secondary_index and \
+#			m.secondary_counter > subdivisions[m.secondary_index].threshold:
+#
+#				subdivisions[m.secondary_index].tempo_count += 1
+#				m.secondary_counter = 1
+#
+#				if subdivisions[m.secondary_index].sound.on :
+#					play_metronome(subdivisions[m.secondary_index].sound)
+#
+#			i -= 1
