@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Metronome",
 "language": "GDScript",
 "path": "res://metronome/Metronome.gd"
+}, {
+"base": "Node",
+"class": "MetronomeGUI",
+"language": "GDScript",
+"path": "res://metronome/metronome_GUI.gd"
 } ]
 _global_script_class_icons={
-"Metronome": "res://metronome/metronome.png"
+"Metronome": "res://metronome/media/metronome.png",
+"MetronomeGUI": "res://metronome/media/metronome.png"
 }
 
 [application]
@@ -27,7 +33,3 @@ config/icon="res://icon.png"
 
 window/size/width=160
 window/size/always_on_top=true
-
-[physics]
-
-common/physics_fps=120
