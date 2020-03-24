@@ -8,28 +8,37 @@ Tempo and Time algorithm, root of the rythmic design.
 - Tempo subdivision up to 128 per measure depending on FPS and BPM
 """
 
-# how to get only one trigger when reached tempo duration ?
-# delta is 1 at the beginning, maybe need to defer the function call to the next frame
-# time_count doesn't start at 0. unix time ? doesn't have milliseconds it seems
-# epsilon divides delta by 2, is there better ?
-# how to pass delta to get_smallest_subdivision() ?
+# func time_to_tempo(time, signature)
 
 var fake_signature := {bpm = 120, bar = 4, beat = 4}
 var fake_dico := {}
 var time_start := 0.0
+var arr := [1,1,1,1]
 
 func _ready() -> void:
 	time_start = get_time_now()
 
 func _physics_process(delta: float) -> void:
-	fake_dico = signature_to_tempo_subdivisions_duration(fake_signature)
-	var actual_time := get_time_duration(time_start)
-	var measure = fake_dico.subdivisions.values()[6]
-	print(actual_time)
-	if epsilon(measure, actual_time):
-		print("---")
-		print("equal")
-		print("---")
+	var time_now := get_time_duration(time_start)
+	time_to_tempo(fake_signature, time_now)
+
+func time_to_tempo(signature: Dictionary, time: float):
+	var d := signature_to_tempo_subdivisions_duration(signature)
+	if fposmod(time, d.subdivisions["1"]) < get_physics_process_delta_time():
+		arr[0] += 1
+		arr[1] = 1
+		arr[2] = 1
+		arr[3] = 1
+	elif fposmod(time, d.subdivisions["4"]) < get_physics_process_delta_time():
+		arr[1] += 1
+		arr[2] = 1
+		arr[3] = 1
+	elif fposmod(time, d.subdivisions["16"]) < get_physics_process_delta_time():
+		arr[2] += 1
+		arr[3] = 1
+	elif fposmod(time, d.subdivisions["64"]) < get_physics_process_delta_time():
+		arr[3] += 1
+	print(arr)
 
 func signature_to_tempo_subdivisions_duration(signature: Dictionary) -> Dictionary:
 	# how to pass delta here ?
@@ -43,12 +52,13 @@ func signature_to_tempo_subdivisions_duration(signature: Dictionary) -> Dictiona
 	return d
 
 func get_time_now() -> float:
-	return OS.get_ticks_usec() / 1000000.0
+	return OS.get_system_time_msecs() / 1000.0
 
 func get_time_duration(start) -> float:
 	return get_time_now() - start
 
 func check_signature_input(signature_input: Dictionary) -> bool:
+	# add specific field error
 	var check_status = false
 	var i := 2
 
@@ -64,7 +74,6 @@ func signature_to_beat_duration(bpm: int, beat_length: int) -> float:
 	return (60.0 / float(bpm)) * (4.0 / float(beat_length))
 
 func beat_duration_to_subdivisions_duration(beat_duration: float, bar: int) -> Dictionary:
-	# maybe convert them all to float ?
 	var d = {}
 	d["1"] = beat_duration * bar
 	d["2"] = beat_duration * 2
@@ -82,7 +91,3 @@ func get_smallest_subdivision(subdivisions, delta) -> int:
 		if key >= delta: index += 1
 		else: return index
 	return index
-
-func epsilon(value1: float, value2: float) -> bool:
-	return abs(value1 - value2) < get_physics_process_delta_time() / 2.0
-

@@ -3,42 +3,41 @@
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [ ] is OS.ticks() best ? unix time doesn't seem to give milliseconds, search more
-- [ ] comparing floats is tricky, used epsilon method, have doubts about the smallest comparison
-- [ ] because ticks are small, sometimes comparison is true multiple times
-- [ ] ticks counting doesn't start at 0, used in ready for the moment, see if problem
 - [ ] create a function that converts time to tempo
 - [ ] bug with image that godot doesn't find
+- [ ] refactor data structure (named Central Data Structure : CDS)
+- [ ] have one signal fired when UI elements change ? try UDF
+- [x] used OS.get_system_time_msecs() insted of ticks, better approach, no float comparison, just remainder
+- [x] comparing floats is tricky, used epsilon method, have doubts about the smallest comparison
+- [x] because ticks are small, sometimes comparison is true multiple times
+- [x] ticks counting doesn't start at 0, used in ready for the moment, see if problem
 - [x] start OS.time at start of metronome, then compare time passed and convert to tempo
 - [x] use already made signature conversion functions
-- [ ] refactor data structure (named Central Data Structure : CDS)
 - [x] separate from the start : metronome logic / UI / data / tools
 - [x] set engine to 60FPS
 - [x] make only pure functions and pass the data tree
-- [ ] should tempo data be an array ? maybe simpler to pass around, dict can be returned in a function
-- [ ] have one signal fired when UI elements change ? gather them and at each received signal fires one general signal to tempo
-- [ ] try redux (unilateral data flow) paradigm when algorithm works to link UI / counting / signals
+- [x] should tempo data be an array ? maybe simpler to pass around, dict can be returned in a function
 
 ### Functions
 
 - [ ] time_to_tempo(time:float) -> dict
 - [ ] get_tempo_array(dict) takes 0 (default) for primary [1/1, 1/4, 1/16, 1/64] and 1 for secondary [1/2, 1/8, 1/32, 1/128]
-- [ ] get_tempo_dict(time, signature_input) returns full tempo dictionary from measure to 1/128 + time signature
-- [ ] get_signature_input(bpm, bar, beat) -> single time_signature dict
-- [x] set_tempo(time_signature: BPM, bar, beat) -> tempo dict result
 - [ ] tempo_to_time(array or dict) -> float ? dict ? define how time will be used, usec, msec
 - [ ] display_tempo() takes 0 (default) for primary and 1 for secondary, return string
-- [ ] reset_tempo() -> default tempo dict
-- [x] check_input(signature_input) -> bool, used in set()
 - [ ] to_dotted(tempo_subdivision_duration) -> float, adds half of the given note
+- [x] get_tempo_dict(time, signature_input) returns full tempo dictionary from measure to 1/128 + time signature
+- [x] get_signature_input(bpm, bar, beat) -> single time_signature dict
+- [x] set_tempo(time_signature: BPM, bar, beat) -> tempo dict result
+- [x] reset_tempo() -> default tempo dict
+- [x] check_input(signature_input) -> bool, used in set()
 - [x] find_smallest_subdivision(delta, tempo) -> int, gives array index of smallest subdivision duration
-- [ ] compensate_delay(delta, accumulator) -> float, computes actual delay and corrects given duration to wait for
+- [x] compensate_delay(delta, accumulator) -> float, computes actual delay and corrects given duration to wait for
 
 ---
 
 ## Roadmap
 
-- (actual) full metronome that converts time and tempo in a single data structure and adapts to FPS
+- (WIP) full metronome that converts time and tempo in a single data structure and adapts to FPS
 - unilateral dataflow (UDF) experimenting and connect metronome
 - input auto-connector : scan scene, select UI inputs and connect chosen signals, gather signals into one that's connected to UDF
 - tempo grid :
