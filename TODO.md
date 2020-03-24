@@ -3,7 +3,13 @@
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [ ] create a function that converts time to tempo
+- [ ] time_to_tempo still works incrementally (and buggy), try to divide time and compute remainders
+- [ ] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
+- [ ] decide on how far subdivisions should go and how to implement it
+- [ ] maybe delay (remainder of tempo divisions) should be taken into account
+- [ ] input_check should be better implemented (more precise error messages, right place in data flow)
+- [ ] is a tempo_to_time necessary ?
+- [ ] implement dotted time
 - [ ] bug with image that godot doesn't find
 - [ ] refactor data structure (named Central Data Structure : CDS)
 - [ ] have one signal fired when UI elements change ? try UDF
@@ -17,21 +23,6 @@ Switch from state machine to functional paradigm
 - [x] set engine to 60FPS
 - [x] make only pure functions and pass the data tree
 - [x] should tempo data be an array ? maybe simpler to pass around, dict can be returned in a function
-
-### Functions
-
-- [ ] time_to_tempo(time:float) -> dict
-- [ ] get_tempo_array(dict) takes 0 (default) for primary [1/1, 1/4, 1/16, 1/64] and 1 for secondary [1/2, 1/8, 1/32, 1/128]
-- [ ] tempo_to_time(array or dict) -> float ? dict ? define how time will be used, usec, msec
-- [ ] display_tempo() takes 0 (default) for primary and 1 for secondary, return string
-- [ ] to_dotted(tempo_subdivision_duration) -> float, adds half of the given note
-- [x] get_tempo_dict(time, signature_input) returns full tempo dictionary from measure to 1/128 + time signature
-- [x] get_signature_input(bpm, bar, beat) -> single time_signature dict
-- [x] set_tempo(time_signature: BPM, bar, beat) -> tempo dict result
-- [x] reset_tempo() -> default tempo dict
-- [x] check_input(signature_input) -> bool, used in set()
-- [x] find_smallest_subdivision(delta, tempo) -> int, gives array index of smallest subdivision duration
-- [x] compensate_delay(delta, accumulator) -> float, computes actual delay and corrects given duration to wait for
 
 ---
 
