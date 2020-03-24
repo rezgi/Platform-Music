@@ -3,16 +3,17 @@
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [ ] time_to_tempo still works incrementally (and buggy), try to divide time and compute remainders
+- [ ] divisions work well. implement secondary tempo
 - [ ] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
 - [ ] decide on how far subdivisions should go and how to implement it
 - [ ] maybe delay (remainder of tempo divisions) should be taken into account
+- [ ] tempo_to_time
+- [ ] dotted_time
 - [ ] input_check should be better implemented (more precise error messages, right place in data flow)
-- [ ] is a tempo_to_time necessary ?
-- [ ] implement dotted time
 - [ ] bug with image that godot doesn't find
 - [ ] refactor data structure (named Central Data Structure : CDS)
 - [ ] have one signal fired when UI elements change ? try UDF
+- [x] time_to_tempo still works incrementally (and buggy), try to divide time and compute remainders
 - [x] used OS.get_system_time_msecs() insted of ticks, better approach, no float comparison, just remainder
 - [x] comparing floats is tricky, used epsilon method, have doubts about the smallest comparison
 - [x] because ticks are small, sometimes comparison is true multiple times

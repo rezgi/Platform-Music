@@ -8,75 +8,39 @@ Tempo and Time algorithm, root of the rythmic design.
 - Tempo subdivision up to 128 per measure depending on FPS and BPM
 """
 
-# bake signature to time divisions or compute it each frame ?
-# problem to get delta before process has begun, compute it from system ? 1.0/get_fps_setting ? put default value ?
+# divisions work well for primary tempo
+# implement secondary tempo
+# add condition to skip loop if acc == 0
+# is smallest_subdivision necessary with this method ?
+# divide arrays from the start in beat_duration_to_subdivisions_duration ?
+
+# do we need one array for all subdivisions ? or keep 2 arrays ?
+# store remainder for delay consideration ? for later use with playback delay
 # time_start needs to triggered by an event and be stored only once
 # better design for input check
-# get_time should return an int ? for later use
-# store remainder for delay consideration ? for later use with playback delay
 
-# bug in counting, sometimes becomes more than 4, maybe because of delta or delay
-# secondary array is messy
-# time_to_tempo needs refactoring
-# do we need one array for all subdivisions ? or keep 2 arrays
-# is it the right approach ? for example measure doesn't get right away how many measures there are
-# maybe should try an approach where measures are divided, then remainder is divided for quarts and so on
-# do not try to increment gradually but to divide time to convert to tempo notation
 
-var fake_signature := {bpm = 120, bar = 4, beat = 4}
-var fake_dico := {}
+var fake_signature := {bpm = 120, bar = 3, beat = 4}
 var time_start := 0.0
-var tempo_primary := [1,1,1,1]
-var tempo_secondary := [1,1,1,1]
 
 func _ready() -> void:
 	time_start = get_time_now()
 
-func _physics_process(delta: float) -> void:
-	time_to_tempo(fake_signature, get_time_duration(time_start))
+func _physics_process(_delta: float) -> void:
+	print(time_to_tempo(fake_signature, get_time_duration(time_start)))
 
-func time_to_tempo(signature: Dictionary, time: float):
+func time_to_tempo(signature: Dictionary, time: float) -> Array:
 	var d := signature_to_tempo_subdivisions_duration(signature)
-	var delta := get_physics_process_delta_time()
+	var s = divide_main_tempo_array(d.subdivisions.values())
+	var t := [1,1,1,1]
+	var acc := time
 	
-	if fposmod(time, d.subdivisions["1"]) < delta:
-		tempo_primary[0] += 1
-		tempo_primary[1] = 1
-		tempo_primary[2] = 1
-		tempo_primary[3] = 1
-		
-		tempo_secondary[0] = 1
-		tempo_secondary[1] = 1
-		tempo_secondary[2] = 1
-		tempo_secondary[3] = 1
-	elif fposmod(time, d.subdivisions["4"]) < delta:
-		tempo_primary[1] += 1
-		tempo_primary[2] = 1
-		tempo_primary[3] = 1
-	elif fposmod(time, d.subdivisions["16"]) < delta:
-		tempo_primary[2] += 1
-		tempo_primary[3] = 1
-	elif fposmod(time, d.subdivisions["64"]) < delta:
-		tempo_primary[3] += 1
+	for i in s.primary.size():
+		var count := int(acc / s.primary[i])
+		t[i] += count
+		acc = acc - (count * s.primary[i])
 	
-#	if fposmod(time, d.subdivisions["2"]) < delta:
-#		tempo_secondary[0] += 1
-#		tempo_secondary[1] = 1
-#		tempo_secondary[2] = 1
-#		tempo_secondary[3] = 1
-#	elif fposmod(time, d.subdivisions["8"]) < delta:
-#		tempo_secondary[1] += 1
-#		tempo_secondary[2] = 1
-#		tempo_secondary[3] = 1
-#	elif fposmod(time, d.subdivisions["32"]) < delta:
-#		tempo_secondary[2] += 1
-#		tempo_secondary[3] = 1
-#	elif fposmod(time, d.subdivisions["128"]) < delta:
-#		tempo_secondary[3] += 1
-	
-	print(tempo_primary)
-#	print(tempo_secondary)
-#	print("---")
+	return t
 
 func signature_to_tempo_subdivisions_duration(signature: Dictionary) -> Dictionary:
 	# how to pass delta here ?
@@ -134,6 +98,7 @@ func get_smallest_subdivision(subdivisions, delta) -> int:
 	return index
 
 func divide_main_tempo_array(arr: Array) -> Dictionary:
+	# should take dict
 	var d := {primary = [0,0,0,0], secondary = [0,0,0,0]}
 	for i in arr.size() / 2:
 		d.primary[i] = arr[i * 2]
@@ -147,15 +112,3 @@ func fuse_tempo_arrays(dic: Dictionary) -> Array:
 		if i % 2 == 0: a[i] = dic.primary[i / 2]
 		else: a[i] = dic.secondary[ceil(i / 2)]
 	return a
-
-
-#var i := 0
-#	while i <= d.smallest_subdivision_index:
-#		if fposmod(time, d.subdivisions.values()[i]) < get_physics_process_delta_time():
-#			if i == 0 or i % 2 == 0:
-#				var y := int(i / 2)
-#				t.primary[y] += 1
-#				if y < t.primary.size(): y += 1
-#				for i in range(t.primary.size()-1):
-#					t.primary[y] = 1
-#		i += 1
