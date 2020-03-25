@@ -1,18 +1,24 @@
 # TODO
 
+## 0.4
+UI & UDF implementation
+
+- [ ] input_check should be better implemented : lock input fields for no error possibility
+- [ ] export variables in the node settings for metronome debug
+- [ ] make togglable UI tool to play metronome in any scene
+- [ ] refactor data structure (named Central Data Structure : CDS)
+- [ ] have one signal fired when UI elements change ? try UDF
+
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [x] divisions work well. implement secondary tempo
 - [ ] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
-- [ ] decide on how far subdivisions should go and how to implement it
 - [ ] maybe delay (remainder of tempo divisions) should be taken into account
 - [ ] tempo_to_time
 - [ ] dotted_time
-- [ ] input_check should be better implemented (more precise error messages, right place in data flow)
 - [ ] bug with image that godot doesn't find
-- [ ] refactor data structure (named Central Data Structure : CDS)
-- [ ] have one signal fired when UI elements change ? try UDF
+- [x] divisions work well. implement secondary tempo
+- [x] decide on how far subdivisions should go and how to implement it
 - [x] time_to_tempo still works incrementally (and buggy), try to divide time and compute remainders
 - [x] used OS.get_system_time_msecs() insted of ticks, better approach, no float comparison, just remainder
 - [x] comparing floats is tricky, used epsilon method, have doubts about the smallest comparison
