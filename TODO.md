@@ -1,22 +1,28 @@
 # TODO
 
 ## 0.4
-UI & UDF implementation
+UI, CDS & UDF implementation
 
-- [ ] input_check should be better implemented : lock input fields for no error possibility
+- [ ] insted of input_check() : lock input fields for no error possibility (BPM only ranged int, signature : ranged int / menu list)
 - [ ] export variables in the node settings for metronome debug
 - [ ] make togglable UI tool to play metronome in any scene
+- [ ] make the metronome (and time_start init) on UI trigger
+- [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment
 - [ ] refactor data structure (named Central Data Structure : CDS)
-- [ ] have one signal fired when UI elements change ? try UDF
+- [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
+- [ ] try scanning all inputs and auto-connecting them ?
 
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [ ] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
-- [ ] maybe delay (remainder of tempo divisions) should be taken into account
 - [ ] tempo_to_time
-- [ ] dotted_time
+- [ ] need a bool to activate counter in process, probably a start() and stop() function
+- [ ] think about how to separate dotted ? maybe not needed
+- [ ] is join_tempo needed ? removed it for the moment
 - [ ] bug with image that godot doesn't find
+- [x] maybe delay (remainder of tempo divisions) should be taken into account
+- [x] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
+- [x] dotted_time
 - [x] divisions work well. implement secondary tempo
 - [x] decide on how far subdivisions should go and how to implement it
 - [x] time_to_tempo still works incrementally (and buggy), try to divide time and compute remainders
@@ -35,10 +41,13 @@ Switch from state machine to functional paradigm
 
 ## Roadmap
 
-- (WIP) full metronome that converts time and tempo in a single data structure and adapts to FPS
-- unilateral dataflow (UDF) experimenting and connect metronome
-- input auto-connector : scan scene, select UI inputs and connect chosen signals, gather signals into one that's connected to UDF
-- tempo grid :
+- 0.3 :
+  - full metronome that converts time and tempo in a single data structure and adapts to FPS
+- 0.4 :
+  - unilateral dataflow (UDF) experimenting and connect metronome
+  - input auto-connector : scan scene, select UI inputs and connect chosen signals, gather signals into one that's connected to UDF
+- 0.5 : 
+  - tempo grid :
   - reads & displays tempo UDF
   - time cursor
   - bpm subdivisions
@@ -46,7 +55,8 @@ Switch from state machine to functional paradigm
   - total time duration
   - zoom in & out
   - one audio layer test
-- audio project creator / importer
+- 0.6 : 
+  - audio project creator / importer
   - bulk audio import : auto-creation, naming and injection of audio nodes
   - read and parse midi JSON that will set the grid layers, duration & markers
   - create midi tracks and display notes

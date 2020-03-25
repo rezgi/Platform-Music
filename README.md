@@ -1,7 +1,7 @@
 # Musilogy
 Creating a tool for musical logic in Godot game engine
 
-[TODO](TODO.md)
+Check progress in the [TODO](TODO.md) list.
 
 ## Versions
 
