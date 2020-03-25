@@ -8,26 +8,22 @@ Tempo and Time algorithm, root of the rythmic design.
 - Tempo subdivision up to 128 per measure depending on FPS and BPM
 """
 
-# divisions work well for primary tempo
-# implement secondary tempo
-# add condition to skip loop if acc == 0
 # is smallest_subdivision necessary with this method ?
 # divide arrays from the start in beat_duration_to_subdivisions_duration ?
-
 # do we need one array for all subdivisions ? or keep 2 arrays ?
-# store remainder for delay consideration ? for later use with playback delay
+
 # time_start needs to triggered by an event and be stored only once
 # better design for input check
 
 
-var fake_signature := {bpm = 120, bar = 3, beat = 4}
+var fake_signature := {bpm = 120, bar = 4, beat = 4}
 var time_start := 0.0
 
 func _ready() -> void:
 	time_start = get_time_now()
 
 func _physics_process(_delta: float) -> void:
-	print(time_to_tempo(fake_signature, get_time_duration(time_start)))
+	time_to_tempo(fake_signature, get_time_duration(time_start))
 
 func time_to_tempo(signature: Dictionary, time: float) -> Array:
 	var d := signature_to_tempo_subdivisions_duration(signature)
@@ -35,10 +31,19 @@ func time_to_tempo(signature: Dictionary, time: float) -> Array:
 	var t := [1,1,1,1]
 	var acc := time
 	
+	var ts := [1,1,1,1]
+	var acc2 := 0.0
+	
 	for i in s.primary.size():
 		var count := int(acc / s.primary[i])
 		t[i] += count
 		acc = acc - (count * s.primary[i])
+		if i == 0: acc2 = acc
+	
+	for i in s.secondary.size():
+		var count := int(acc2 / s.secondary[i])
+		ts[i] += count
+		acc2 = acc2 - (count * s.secondary[i])
 	
 	return t
 

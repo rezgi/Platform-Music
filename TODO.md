@@ -3,7 +3,7 @@
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [ ] divisions work well. implement secondary tempo
+- [x] divisions work well. implement secondary tempo
 - [ ] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
 - [ ] decide on how far subdivisions should go and how to implement it
 - [ ] maybe delay (remainder of tempo divisions) should be taken into account
