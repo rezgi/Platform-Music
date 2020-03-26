@@ -8,28 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Node",
-"class": "Metronome",
-"language": "GDScript",
-"path": "res://metronome/Metronome.gd"
-}, {
-"base": "Node",
-"class": "MetronomeGUI",
-"language": "GDScript",
-"path": "res://metronome/metronome_GUI.gd"
-} ]
+_global_script_classes=[  ]
 _global_script_class_icons={
-"Metronome": "res://metronome/media/metronome.png",
-"MetronomeGUI": "res://metronome/media/metronome.png"
+
 }
 
 [application]
 
-config/name="13 - Platform Music"
+config/name="13 - Musilogy"
 config/icon="res://icon.png"
 
 [display]
 
-window/size/width=160
+window/size/width=1920
+window/size/height=1080
 window/size/always_on_top=true
+window/size/test_width=480
+window/size/test_height=270

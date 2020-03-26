@@ -1,5 +1,6 @@
-extends Node
-class_name Metronome, "res://metronome/media/metronome.png"
+extends Control
+
+#class_name Metronome, "res://metronome/media/metronome.png"
 
 """
 Tempo and Time algorithm, root of the rythmic design.
@@ -16,14 +17,15 @@ Tempo and Time algorithm, root of the rythmic design.
 	- tempo_to_time()
 """
 
-#var fake_signature := {bpm = 120, bar = 4, beat = 4}
+var fake_signature := {bpm = 120, bar = 4, beat = 4}
 var time_start := 0.0
 
 func _ready() -> void:
 	time_start = get_time_now()
 
-#func _physics_process(_delta: float) -> void:
-#	time_to_tempo(fake_signature, get_time_duration(time_start))
+func _physics_process(_delta: float) -> void:
+	var test := time_to_tempo(fake_signature, get_time_duration(time_start))
+	print(test.regular.primary)
 
 func time_to_tempo(signature: Dictionary, time: float) -> Dictionary:
 	var s := signature_to_tempo(signature)

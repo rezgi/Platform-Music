@@ -7,6 +7,9 @@ UI, CDS & UDF implementation
 - [ ] export variables in the node settings for metronome debug
 - [ ] make togglable UI tool to play metronome in any scene
 - [ ] make the metronome (and time_start init) on UI trigger
+- [ ] convert metronome sounds to .wav
+- [ ] experiment wav exports with 0db zones and compare file sizes
+- [ ] experiment compression of wav files (and decompression in godot) and compare file size
 - [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment
 - [ ] refactor data structure (named Central Data Structure : CDS)
 - [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
@@ -17,9 +20,9 @@ Switch from state machine to functional paradigm
 
 - [ ] tempo_to_time
 - [ ] need a bool to activate counter in process, probably a start() and stop() function
-- [ ] think about how to separate dotted ? maybe not needed
-- [ ] is join_tempo needed ? removed it for the moment
-- [ ] bug with image that godot doesn't find
+- [x] bug with image that godot doesn't find -> bug when root node is Node, solved by using Control node instead
+- [x] think about how to separate dotted ? maybe not needed
+- [x] is join_tempo needed ? removed it for the moment
 - [x] maybe delay (remainder of tempo divisions) should be taken into account
 - [x] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
 - [x] dotted_time
