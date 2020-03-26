@@ -18,9 +18,13 @@ Tempo and Time algorithm, root of the rythmic design.
 """
 
 # make a method of tempo conversion that takes one tempo array, computation type, signature and returns float ?
+# make an enum for optional arguments to main methods : 
+# (0 : REGULAR || 1 :  DOTTED || 2 : FULL_DICT, 0: PRIMARY || 1: SECONDARY || 2 : FULL_DICT ) / (2)
+# maybe make converter function for time & tempo methods : (dict, type) -> float
 
 var fake_signature := {bpm = 120, bar = 4, beat = 4}
 var time_start := 0.0
+#var metronome_on := false
 
 func _ready() -> void:
 	time_start = get_time_now()

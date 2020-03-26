@@ -4,6 +4,7 @@
 UI, CDS & UDF implementation
 
 - [ ] insted of input_check() : lock input fields for no error possibility (BPM only ranged int, signature : ranged int / menu list)
+- [ ] need a bool to activate counter in process, probably a start() and stop() function
 - [ ] export variables in the node settings for metronome debug
 - [ ] make togglable UI tool to play metronome in any scene
 - [ ] make the metronome (and time_start init) on UI trigger
@@ -18,7 +19,7 @@ UI, CDS & UDF implementation
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [ ] need a bool to activate counter in process, probably a start() and stop() function
+- [ ] make a function or enum to get only one array ? 
 - [x] tempo_to_time
 - [x] bug with image that godot doesn't find -> bug when root node is Node, solved by using Control node instead
 - [x] think about how to separate dotted ? maybe not needed
