@@ -12,10 +12,12 @@ Tempo and Time algorithm, root of the rythmic design.
 		- takes time signature & actual time duration then returns a dictionary with 4 arrays : 
 		- regular tempo : primary [1/1, 1/4, 1/16, 1/64] & secondary [1/2, 1/8, 1/32, 1/128]
 		- dotted tempo : primary [1/1 + 1/2, 1/4 + 1/18, 1/16 + 1/32, 1/64 + 1/128] & secondary 
+	- tempo_to_time()
 	- start()
 	- stop()
-	- tempo_to_time()
 """
+
+# make a method of tempo conversion that takes one tempo array, computation type, signature and returns float ?
 
 var fake_signature := {bpm = 120, bar = 4, beat = 4}
 var time_start := 0.0
@@ -24,29 +26,25 @@ func _ready() -> void:
 	time_start = get_time_now()
 
 func _physics_process(_delta: float) -> void:
-	var test := time_to_tempo(fake_signature, get_time_duration(time_start))
-	print(test.regular.primary)
+	var tempo := time_to_tempo(fake_signature, get_time_duration(time_start))
+	var time := tempo_to_time(tempo, fake_signature)
+	print(time)
 
 func time_to_tempo(signature: Dictionary, time: float) -> Dictionary:
 	var s := signature_to_tempo(signature)
 	var tempo := {regular = {}, dotted = {}}
 	
-	var tr := split_tempo(s.regular)
-	var td := split_tempo(s.dotted)
-	
-	tempo.regular.primary = divide_time(tr.primary, time)
-	tempo.regular.secondary = divide_time(tr.secondary, measure_remainder(tr.primary[0], time))
-	
-	tempo.dotted.primary = divide_time(td.primary, time)
-	tempo.dotted.secondary = divide_time(td.secondary, measure_remainder(td.primary[0], time))
+	tempo.regular.primary = divide_time(s.regular.primary, time)
+	tempo.regular.secondary = divide_time(s.regular.secondary, measure_remainder(s.regular.primary[0], time))	
+	tempo.dotted.primary = divide_time(s.dotted.primary, time)
+	tempo.dotted.secondary = divide_time(s.dotted.secondary, measure_remainder(s.dotted.primary[0], time))
 
 	return tempo
 
 func signature_to_tempo(signature: Dictionary) -> Dictionary:
-	var s := signature
-	var reg := beat_to_tempo(signature_to_beat(s.bpm, s.beat), s.bar)
+	var reg := beat_to_tempo(signature_to_beat(signature.bpm, signature.beat), signature.bar)
 	var dot := tempo_to_dotted(reg)
-	return {regular = reg, dotted = dot}
+	return {regular = split_tempo(reg), dotted = split_tempo(dot)}
 
 func beat_to_tempo(beat_duration: float, bar: int) -> Dictionary:
 	var d := {}
@@ -101,3 +99,20 @@ func split_tempo(dict: Dictionary) -> Dictionary:
 		d.primary[i] = a[i * 2]
 		d.secondary[i] = a[i * 2 + 1]
 	return d
+
+func tempo_to_time(tempo: Dictionary, signature: Dictionary) -> Dictionary:
+	var s := signature_to_tempo(signature)
+	var time := {regular = {}, dotted = {}}
+
+	time.regular.primary = tempo_multiplier(tempo.regular.primary, s.regular.primary)
+	time.regular.secondary = tempo_multiplier(tempo.regular.secondary, s.regular.secondary)
+	time.dotted.primary = tempo_multiplier(tempo.dotted.primary, s.dotted.primary)
+	time.dotted.secondary = tempo_multiplier(tempo.dotted.secondary, s.dotted.secondary)
+	
+	return time
+
+func tempo_multiplier(tempo: Array, duration: Array) -> float:
+	var acc := 0.0
+	for i in range(tempo.size()):
+		acc += (tempo[i] - 1) * duration[i]
+	return acc
