@@ -5,8 +5,10 @@ Check progress in the [TODO](TODO.md) list.
 
 ## Versions
 
-- 0.3 (20/03/2020 > ?):
-  - applying functional paradigm and UDF
+- 0.4 (27/03/2020 > ?):
+  - UI & UDF architecture implementation
+- 0.3 (20/03/2020 > 26/03/2020):
+  - applying functional paradigm to metronome algorithm by subdividing time data
 - 0.2 (11/03/2020 > 18/03/2020): 
   - made a working but lacking metronome (heavy data structure, counting bugs, physics based, confusing state machine base)
 - 0.1 (06/03/2020 > 10/03/2020):

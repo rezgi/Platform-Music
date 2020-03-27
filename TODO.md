@@ -3,23 +3,24 @@
 ## 0.4
 UI, CDS & UDF implementation
 
+- [x] make the metronome (and time_start init) on UI trigger
 - [ ] insted of input_check() : lock input fields for no error possibility (BPM only ranged int, signature : ranged int / menu list)
-- [ ] need a bool to activate counter in process, probably a start() and stop() function
-- [ ] export variables in the node settings for metronome debug
 - [ ] make togglable UI tool to play metronome in any scene
-- [ ] make the metronome (and time_start init) on UI trigger
-- [ ] convert metronome sounds to .wav
-- [ ] experiment wav exports with 0db zones and compare file sizes
-- [ ] experiment compression of wav files (and decompression in godot) and compare file size
 - [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment
 - [ ] refactor data structure (named Central Data Structure : CDS)
 - [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
+- [ ] experiment wav exports with 0db zones and compare file sizes
+- [ ] experiment compression of wav files (and decompression in godot) and compare file size
 - [ ] try scanning all inputs and auto-connecting them ?
+- [x] need a bool to activate counter in process, probably a start() and stop() function
+- [x] export variables in the node settings for metronome debug ? Not needed for the moment, check if need of other parameters later
+- [x] convert metronome sounds to .wav
 
 ## 0.3
 Switch from state machine to functional paradigm
 
-- [ ] make a function or enum to get only one array ? 
+- [ ] Maybe divide 16th by 128 (or 125 like cubase) to have only one array : [1,4,4,128] -> 1/128 = .16, 1/64 (2x128) = .32, 1/32 = .64, 1/16 = .128
+- [x] make a function or enum to get only one array ? See for later
 - [x] tempo_to_time
 - [x] bug with image that godot doesn't find -> bug when root node is Node, solved by using Control node instead
 - [x] think about how to separate dotted ? maybe not needed

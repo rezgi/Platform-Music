@@ -1,51 +1,87 @@
-extends Control
-
+extends Node
 #class_name Metronome, "res://metronome/media/metronome.png"
 
 """
 Tempo and Time algorithm, root of the rythmic design.
 
-- Metronome with BPM & time signature
-- Dynamically converts time to tempo through pure functions
-- API : 
-	- time_to_tempo(signature, time) -> {[rp],[rs],[dp],[ds]}
-		- takes time signature & actual time duration then returns a dictionary with 4 arrays : 
-		- regular tempo : primary [1/1, 1/4, 1/16, 1/64] & secondary [1/2, 1/8, 1/32, 1/128]
-		- dotted tempo : primary [1/1 + 1/2, 1/4 + 1/18, 1/16 + 1/32, 1/64 + 1/128] & secondary 
-	- tempo_to_time()
-	- start()
-	- stop()
+- Metronome regular counting using BPM & time signature
+- Dynamically converts time to tempo count through pure functions
+
+- time_to_tempo(time, signature, type) converts time to tempo count
+- tempo_to_time(tempo, signature, type) converts tempo to time
+
+- Regular tempo : primary [1/1, 1/4, 1/16, 1/64] & secondary [1/2, 1/8, 1/32, 1/128]
+- Dotted tempo : adds half duration to each tempo subdivision
 """
 
-# make a method of tempo conversion that takes one tempo array, computation type, signature and returns float ?
-# make an enum for optional arguments to main methods : 
-# (0 : REGULAR || 1 :  DOTTED || 2 : FULL_DICT, 0: PRIMARY || 1: SECONDARY || 2 : FULL_DICT ) / (2)
-# maybe make converter function for time & tempo methods : (dict, type) -> float
+# try divide 16th by 128 (or 125 like cubase) to have only one array : 
+# [1,4,4,128] -> 1/128 = .16, 1/64 (2x128) = .32, 1/32 = .64, 1/16 = .128
 
-var fake_signature := {bpm = 120, bar = 4, beat = 4}
-var time_start := 0.0
-#var metronome_on := false
+# metronome has to send data to CDS, first through signal, then through UDF
 
-func _ready() -> void:
-	time_start = get_time_now()
 
-func _physics_process(_delta: float) -> void:
-	var tempo := time_to_tempo(fake_signature, get_time_duration(time_start))
-	var time := tempo_to_time(tempo, fake_signature)
-	print(time)
+var default_signature := {bpm = 120, bar = 4, beat = 4}
+enum {FULL, REGULAR_PRIMARY, REGULAR_SECONDARY, DOTTED_PRIMARY, DOTTED_SECONDARY}
 
-func time_to_tempo(signature: Dictionary, time: float) -> Dictionary:
-	var s := signature_to_tempo(signature)
-	var tempo := {regular = {}, dotted = {}}
-	
-	tempo.regular.primary = divide_time(s.regular.primary, time)
-	tempo.regular.secondary = divide_time(s.regular.secondary, measure_remainder(s.regular.primary[0], time))	
-	tempo.dotted.primary = divide_time(s.dotted.primary, time)
-	tempo.dotted.secondary = divide_time(s.dotted.secondary, measure_remainder(s.dotted.primary[0], time))
+## Main Methods
 
-	return tempo
+func time_to_tempo(time: float, signature: Dictionary = default_signature, type: int = 1) -> Array:
+	var s := signature_to_durations(signature)
+	match type:
+		FULL:
+			var tempo := []
+			tempo.append(time_divider(s.regular.primary, time))
+			tempo.append(time_divider(s.regular.secondary, measure_remainder(s.regular.primary[0], time)))
+			tempo.append(time_divider(s.dotted.primary, time))
+			tempo.append(time_divider(s.dotted.secondary, measure_remainder(s.dotted.primary[0], time)))
+			return tempo
+		REGULAR_PRIMARY:
+			return time_divider(s.regular.primary, time)
+		REGULAR_SECONDARY:
+			return time_divider(s.regular.secondary, measure_remainder(s.regular.primary[0], time))
+		DOTTED_PRIMARY:
+			return time_divider(s.dotted.primary, time)
+		DOTTED_SECONDARY:
+			return time_divider(s.dotted.secondary, measure_remainder(s.dotted.primary[0], time))
+		_:
+			return []
 
-func signature_to_tempo(signature: Dictionary) -> Dictionary:
+func tempo_to_time(tempo: Array, signature: Dictionary = default_signature, type: int = 1) -> float:
+	if tempo.size() == 0:
+		return 0.0
+	var s := signature_to_durations(signature)
+	match type:
+		FULL:
+			return 0.0
+		REGULAR_PRIMARY:
+			return tempo_multiplier(tempo, s.regular.primary)
+		REGULAR_SECONDARY:
+			return tempo_multiplier(tempo, s.regular.secondary)
+		DOTTED_PRIMARY:
+			return tempo_multiplier(tempo, s.dotted.primary)
+		DOTTED_SECONDARY:
+			return tempo_multiplier(tempo, s.dotted.secondary)
+		_:
+			return 0.0
+
+## Time Conversion
+
+func time_divider(duration_array: Array, time: float) -> Array:
+	var tempo_array := [1,1,1,1]
+	var acc := time
+	for i in duration_array.size():
+		var count := int(acc / duration_array[i])
+		tempo_array[i] += count
+		acc = acc - (count * duration_array[i])
+	return tempo_array
+
+func tempo_multiplier(tempo: Array, duration: Array) -> float:
+	var acc := 0.0
+	for i in range(tempo.size()):
+		acc += (tempo[i] - 1) * duration[i]
+	return acc
+
+func signature_to_durations(signature: Dictionary) -> Dictionary:
 	var reg := beat_to_tempo(signature_to_beat(signature.bpm, signature.beat), signature.bar)
 	var dot := tempo_to_dotted(reg)
 	return {regular = split_tempo(reg), dotted = split_tempo(dot)}
@@ -74,26 +110,13 @@ func tempo_to_dotted(durations: Dictionary) -> Dictionary:
 	d["128d"] = 1
 	return d
 
-func divide_time(duration_array: Array, time: float) -> Array:
-	var tempo_array := [1,1,1,1]
-	var acc := time
-	for i in duration_array.size():
-		var count := int(acc / duration_array[i])
-		tempo_array[i] += count
-		acc = acc - (count * duration_array[i])
-	return tempo_array
-
 func measure_remainder(measure_duration: float, time: float) -> float:
 	return time - (int(time / measure_duration) * measure_duration)
 
 func signature_to_beat(bpm: int, beat_length: int) -> float:
 	return (60.0 / bpm) * (4.0 / beat_length)
 
-func get_time_duration(start) -> float:
-	return get_time_now() - start
-
-func get_time_now() -> float:
-	return OS.get_system_time_msecs() / 1000.0
+## Tools
 
 func split_tempo(dict: Dictionary) -> Dictionary:
 	var a := dict.values()
@@ -104,19 +127,8 @@ func split_tempo(dict: Dictionary) -> Dictionary:
 		d.secondary[i] = a[i * 2 + 1]
 	return d
 
-func tempo_to_time(tempo: Dictionary, signature: Dictionary) -> Dictionary:
-	var s := signature_to_tempo(signature)
-	var time := {regular = {}, dotted = {}}
+func get_time_duration(start) -> float:
+	return get_time_now() - start
 
-	time.regular.primary = tempo_multiplier(tempo.regular.primary, s.regular.primary)
-	time.regular.secondary = tempo_multiplier(tempo.regular.secondary, s.regular.secondary)
-	time.dotted.primary = tempo_multiplier(tempo.dotted.primary, s.dotted.primary)
-	time.dotted.secondary = tempo_multiplier(tempo.dotted.secondary, s.dotted.secondary)
-	
-	return time
-
-func tempo_multiplier(tempo: Array, duration: Array) -> float:
-	var acc := 0.0
-	for i in range(tempo.size()):
-		acc += (tempo[i] - 1) * duration[i]
-	return acc
+func get_time_now() -> float:
+	return OS.get_system_time_msecs() / 1000.0
