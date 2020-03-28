@@ -3,7 +3,6 @@
 ## 0.4
 UI, CDS & UDF implementation
 
-- [x] make the metronome (and time_start init) on UI trigger
 - [ ] insted of input_check() : lock input fields for no error possibility (BPM only ranged int, signature : ranged int / menu list)
 - [ ] make togglable UI tool to play metronome in any scene
 - [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment
@@ -12,14 +11,15 @@ UI, CDS & UDF implementation
 - [ ] experiment wav exports with 0db zones and compare file sizes
 - [ ] experiment compression of wav files (and decompression in godot) and compare file size
 - [ ] try scanning all inputs and auto-connecting them ?
+- [x] make the metronome (and time_start init) on UI trigger
 - [x] need a bool to activate counter in process, probably a start() and stop() function
 - [x] export variables in the node settings for metronome debug ? Not needed for the moment, check if need of other parameters later
 - [x] convert metronome sounds to .wav
 
 ## 0.3
-Switch from state machine to functional paradigm
+Switch Metronome algorithm from state machine to functional paradigm
 
-- [ ] Maybe divide 16th by 128 (or 125 like cubase) to have only one array : [1,4,4,128] -> 1/128 = .16, 1/64 (2x128) = .32, 1/32 = .64, 1/16 = .128
+- [ ] leave only primary array and make a function that computes any note wanted (dotted, trippled, 1/32, etc.)
 - [x] make a function or enum to get only one array ? See for later
 - [x] tempo_to_time
 - [x] bug with image that godot doesn't find -> bug when root node is Node, solved by using Control node instead

@@ -14,10 +14,13 @@ Tempo and Time algorithm, root of the rythmic design.
 - Dotted tempo : adds half duration to each tempo subdivision
 """
 
-# try divide 16th by 128 (or 125 like cubase) to have only one array : 
-# [1,4,4,128] -> 1/128 = .16, 1/64 (2x128) = .32, 1/32 = .64, 1/16 = .128
-
-# metronome has to send data to CDS, first through signal, then through UDF
+# remove secondary and dotted arrays, make a function that returns any note wanted
+# get_note(tempo, 16, DOTTED) -> [1,1,3,1]
+# enum {NORMAL, TRIPLET, DOTTED}
+# dotted -> note[i] + note[i] / 2
+# trippled -> note[i-1] / 3 or note[i - 2] / 6, ex: 1/16t = 1/8 / 3, 1/64t = 1/16 / 6
+# cubase tempo : [1,4,4,120] -> last digit is 16th == 120 / 8 (128th) = 15 or 120 / 6 (64t) = 20
+# stop at 3 decimals for time
 
 
 var default_signature := {bpm = 120, bar = 4, beat = 4}

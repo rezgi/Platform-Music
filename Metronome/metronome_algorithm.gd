@@ -2,10 +2,14 @@ extends "res://Metronome/Metronome.gd"
 
 # start and stop need to send corresponding signals and know if started or not outside
 # a metronome_run() function only for process ? divide between static and dynamic methods
+# metronome has to send data to CDS, first through signal, then through UDF
+# cubase doesn't go over 360BPM
+# UI inputs become red when not in right format
 
 #time_to_tempo(time: float, signature: Dictionary = default_signature, type: int = 1) -> Array
 #tempo_to_time(tempo: Array, signature: Dictionary = default_signature, type: int = 1) -> float
 
+# this data should be in CDS, no global variable :
 var time_start := 0.0
 var metronome_on := false
 var custom_signature := {bpm = 120, bar = 3, beat = 4}
