@@ -15,16 +15,13 @@ Tempo and Time algorithm, root of the rythmic design.
 """
 
 # remove secondary and dotted arrays, make a function that returns any note wanted
-# get_note(tempo, 16, DOTTED) -> [1,1,3,1]
-# enum {NORMAL, TRIPLET, DOTTED}
-# dotted -> note[i] + note[i] / 2
-# trippled -> note[i-1] / 3 or note[i - 2] / 6, ex: 1/16t = 1/8 / 3, 1/64t = 1/16 / 6
-# cubase tempo : [1,4,4,120] -> last digit is 16th == 120 / 8 (128th) = 15 or 120 / 6 (64t) = 20
 # stop at 3 decimals for time
+# make a global error function ?
 
 
 var default_signature := {bpm = 120, bar = 4, beat = 4}
 enum {FULL, REGULAR_PRIMARY, REGULAR_SECONDARY, DOTTED_PRIMARY, DOTTED_SECONDARY}
+enum {NORMAL, TRIPLET, DOTTED}
 
 ## Main Methods
 
@@ -118,6 +115,50 @@ func measure_remainder(measure_duration: float, time: float) -> float:
 
 func signature_to_beat(bpm: int, beat_length: int) -> float:
 	return (60.0 / bpm) * (4.0 / beat_length)
+
+## New algorithm
+
+func signature_to_duration(subdivision: int, signature: Dictionary, tempo_type: int = 0) -> float:
+	# what to do with returned -1 ? how to have precise error messages while returning only a float ?
+	var i := 1
+	var check := false
+	while i <= 128:
+		if subdivision == i: check = true
+		i *= 2
+	if not check: return -1.0
+	
+	var beat := signature_to_beat(signature.bpm, signature.beat)
+	var duration = beat * signature.bar if subdivision == 1 else beat / (subdivision / 4.0)
+	
+	match tempo_type:
+		0:
+			return duration
+		1:
+			if subdivision == 1 or subdivision == 128 : return -1.0
+			else : return duration * 2 / 3.0
+		2:
+			if subdivision == 1 or subdivision == 128 : return -1.0
+			else : return duration + (duration / 2.0)
+		_:
+			return -1.0
+
+#func sub_time_counter(acc, tempo_type):
+#	var sub_duration := acc / 120
+#	var sub_selector := 128
+#	var sub_multiplier := 120 / (sub_selector / 16) * 1.5 if tempo_type == 1 else 1
+#	var count := int(acc / sub_duration * sub_multiplier)
+#	return sub_multiplier * count
+
+#func time_divider(time: float, signature: Dictionary, tempo_type: int = 0) -> Array:
+#	var tempo_array := []
+#	var acc := time
+#	for i in tempo_array.size():
+#		if i == 3: tempo_array[i] = sub_time_counter(acc, tempo_type)
+#		else:
+#			var count := int(acc / signature_to_duration(i * 4, signature))
+#			tempo_array[i] += count
+#			acc = acc - (count * duration_array[i])
+#	return tempo_array
 
 ## Tools
 
