@@ -7,7 +7,7 @@ Tempo and Time algorithm, root of the rythmic design.
 - Converts time to tempo in both directions through pure functions
 - Takes triplet and dotted into account (optional) when computing subdivision duration
 - Subdivisions : 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64, 1/128 : [1, 2, 4, 8, 16, 32, 64, 128]
-- Divides sub-16th duration to 1/120 ratio and rounds it to 5 increments
+- Divides sub-16th duration to 1/120 ratio
 """
 
 var default_signature := {bpm = 120, bar = 4, beat = 4}
@@ -59,11 +59,7 @@ func signature_to_duration(subdivision: int, signature: Dictionary = default_sig
 
 func sub_time_counter(time_left: float, sixteenth: float) -> int:
 	if time_left == 0: return 0
-	var increment_duration := sixteenth / 120
-	var count := time_left / increment_duration
-	var rounded_count = count + (5 - fposmod(count, 5))
-	
-	return 0 if rounded_count == 120 else rounded_count
+	else: return int(ceil(time_left / (sixteenth / 120)))
 
 func get_time_duration(start) -> float:
 	return get_time_now() - start

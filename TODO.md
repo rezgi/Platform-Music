@@ -3,6 +3,7 @@
 ## 0.4
 UI, CDS & UDF implementation
 
+- [ ] Make UI : Metronome top bar with inputs
 - [ ] lock input fields for no error possibility (BPM, time signature, dotted, triplet)
 - [ ] make togglable UI tool to play metronome in any scene
 - [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment

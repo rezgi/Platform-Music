@@ -1,0 +1,137 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Metronome/metronome_core.gd" type="Script" id=1]
+[ext_resource path="res://Metronome/metronome_api.gd" type="Script" id=2]
+[ext_resource path="res://Metronome/Assets/Icons/note.png" type="Texture" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[node name="Metronome_UI" type="Control"]
+margin_right = 1920.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.2, 0.227451, 0.309804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.00012207
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_right = 1920.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Icon_Tempo" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+margin_right = 16.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 16, 16 )
+texture = ExtResource( 3 )
+expand = true
+
+[node name="Label_Tempo" type="Label" parent="MarginContainer/HBoxContainer"]
+margin_left = 20.0
+margin_top = 3.0
+margin_right = 80.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 60, 0 )
+text = "1.3.1.75"
+align = 2
+
+[node name="VSeparator_01" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+margin_left = 84.0
+margin_right = 104.0
+margin_bottom = 20.0
+custom_constants/separation = 20
+
+[node name="Label_Time" type="Label" parent="MarginContainer/HBoxContainer"]
+margin_left = 108.0
+margin_top = 3.0
+margin_right = 172.0
+margin_bottom = 17.0
+text = "00.02.125"
+
+[node name="VSeparator_02" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+margin_left = 176.0
+margin_right = 196.0
+margin_bottom = 20.0
+custom_constants/separation = 20
+
+[node name="Input_BPM" type="TextEdit" parent="MarginContainer/HBoxContainer"]
+margin_left = 200.0
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 40, 20 )
+custom_styles/normal = SubResource( 1 )
+text = "120"
+
+[node name="VSeparator_03" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+margin_left = 244.0
+margin_right = 264.0
+margin_bottom = 20.0
+custom_constants/separation = 20
+
+[node name="Input_Bar" type="TextEdit" parent="MarginContainer/HBoxContainer"]
+margin_left = 268.0
+margin_right = 288.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 20 )
+custom_styles/normal = SubResource( 2 )
+text = "4"
+
+[node name="Label_Bar" type="Label" parent="MarginContainer/HBoxContainer"]
+margin_left = 292.0
+margin_top = 3.0
+margin_right = 301.0
+margin_bottom = 17.0
+text = "/ "
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/HBoxContainer"]
+margin_left = 305.0
+margin_right = 327.0
+margin_bottom = 20.0
+custom_styles/normal = SubResource( 3 )
+text = "4"
+items = [ "4", null, false, 0, null, "2", null, false, 1, null, "8", null, false, 2, null, "16", null, false, 3, null, "32", null, false, 4, null, "64", null, false, 5, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator_04" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+margin_left = 331.0
+margin_right = 351.0
+margin_bottom = 20.0
+custom_constants/separation = 20
+
+[node name="Modules" type="Node" parent="."]
+
+[node name="API" type="Node" parent="Modules"]
+script = ExtResource( 2 )
+
+[node name="Core" type="Node" parent="Modules"]
+script = ExtResource( 1 )
