@@ -3,7 +3,7 @@
 ## 0.4
 UI, CDS & UDF implementation
 
-- [ ] insted of input_check() : lock input fields for no error possibility (BPM only ranged int, signature : ranged int / menu list)
+- [ ] lock input fields for no error possibility (BPM, time signature, dotted, triplet)
 - [ ] make togglable UI tool to play metronome in any scene
 - [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment
 - [ ] refactor data structure (named Central Data Structure : CDS)
@@ -19,7 +19,9 @@ UI, CDS & UDF implementation
 ## 0.3
 Switch Metronome algorithm from state machine to functional paradigm
 
-- [ ] leave only primary array and make a function that computes any note wanted (dotted, trippled, 1/32, etc.)
+- [x] function that converts tempo to time by taking into account signature types
+- [x] made a function that converts time to tempo regardless of signature types
+- [x] leave only primary array and make a function that computes any note wanted (dotted, trippled, 1/32, etc.)
 - [x] make a function or enum to get only one array ? See for later
 - [x] tempo_to_time
 - [x] bug with image that godot doesn't find -> bug when root node is Node, solved by using Control node instead

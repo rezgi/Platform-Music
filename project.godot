@@ -18,6 +18,10 @@ _global_script_class_icons={
 config/name="13 - Musilogy"
 config/icon="res://icon.png"
 
+[debug]
+
+gdscript/warnings/integer_division=false
+
 [display]
 
 window/size/width=1920
