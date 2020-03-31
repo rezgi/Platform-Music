@@ -14,7 +14,7 @@ extends Node
 #	no 1/1 & 1/128 on triplet / dotted
 #	can enter tempo directly ? compute new measure over 5 ? how to have ranged selection within label ?
 
-onready var m := preload("res://Metronome/metronome_core.gd").new()
+onready var m := preload("res://Metronome/Scripts/metronome_core.gd").new()
 
 var time_start := 0.0
 var metronome_on := false

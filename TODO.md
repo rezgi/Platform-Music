@@ -3,15 +3,14 @@
 ## 0.4
 UI, CDS & UDF implementation
 
-- [ ] Make UI : Metronome top bar with inputs
-- [ ] lock input fields for no error possibility (BPM, time signature, dotted, triplet)
-- [ ] make togglable UI tool to play metronome in any scene
-- [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment
-- [ ] refactor data structure (named Central Data Structure : CDS)
+- [x] Make UI : Metronome top bar with inputs
+- [ ] connect all input signals to a dedicated script
+- [ ] lock input fields for no error possibility (BPM, time signature)
+- [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
 - [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
+- [ ] make togglable UI tool to play metronome in any scene
 - [ ] experiment wav exports with 0db zones and compare file sizes
 - [ ] experiment compression of wav files (and decompression in godot) and compare file size
-- [ ] try scanning all inputs and auto-connecting them ?
 - [x] make the metronome (and time_start init) on UI trigger
 - [x] need a bool to activate counter in process, probably a start() and stop() function
 - [x] export variables in the node settings for metronome debug ? Not needed for the moment, check if need of other parameters later
@@ -53,9 +52,8 @@ Switch Metronome algorithm from state machine to functional paradigm
   - full metronome that converts time and tempo in a single data structure and adapts to FPS
 - 0.4 :
   - unilateral dataflow (UDF) experimenting and connect metronome
-  - input auto-connector : scan scene, select UI inputs and connect chosen signals, gather signals into one that's connected to UDF
 - 0.5 : 
-  - tempo grid :
+  - **tempo grid :**
   - reads & displays tempo UDF
   - time cursor
   - bpm subdivisions
@@ -64,15 +62,16 @@ Switch Metronome algorithm from state machine to functional paradigm
   - zoom in & out
   - one audio layer test
 - 0.6 : 
-  - audio project creator / importer
+  - **audio project creator / importer :**
   - bulk audio import : auto-creation, naming and injection of audio nodes
-  - read and parse midi JSON that will set the grid layers, duration & markers
+  - read and parse midi JSON / Cubase XML to set grid layers, duration & markers
   - create midi tracks and display notes
   - audio tracks will be compared to midi track names, name them accordingly and sync them on the same layers
   - analyse audio spectrums and overlay them with midi notes, 0db sections won't be displayed, audio sections will be automatically created for loops
   - SFX & overlays can be imported and have their own container type, not depending on sections but events
-- grid layers :
-  - sections : 
+- 0.7 :
+- **grid layers :**
+  - sections :
     - music section
     - can be looped
     - have general time according to total time and relative time for its own local time (starts at 0)
@@ -119,6 +118,8 @@ Switch Metronome algorithm from state machine to functional paradigm
   - tracks and sections can be routed to buses, signals, animationPlayers, nodeTree
 - misc :
   - nodal UI to manage interactions, data communication, signal & events
+  - input auto-connector : scan scene, select UI inputs and connect chosen signals, gather signals into one that's connected to UDF
+
 
 ---
 
