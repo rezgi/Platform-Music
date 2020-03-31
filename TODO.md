@@ -5,12 +5,13 @@ UI, CDS & UDF implementation
 
 - [x] Make UI : Metronome top bar with inputs
 - [ ] connect all input signals to a dedicated script
-- [ ] lock input fields for no error possibility (BPM, time signature)
+- [x] lock input fields for no error possibility (BPM, time signature)
 - [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
 - [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
 - [ ] make togglable UI tool to play metronome in any scene
 - [ ] experiment wav exports with 0db zones and compare file sizes
 - [ ] experiment compression of wav files (and decompression in godot) and compare file size
+- [ ] experiment parsing XML from Cubase
 - [x] make the metronome (and time_start init) on UI trigger
 - [x] need a bool to activate counter in process, probably a start() and stop() function
 - [x] export variables in the node settings for metronome debug ? Not needed for the moment, check if need of other parameters later

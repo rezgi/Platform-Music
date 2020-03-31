@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Metronome/Scripts/metronome_core.gd" type="Script" id=1]
 [ext_resource path="res://Metronome/Scripts/metronome_api.gd" type="Script" id=2]
@@ -9,6 +9,9 @@
 [ext_resource path="res://Metronome/Assets/Icons/stop.png" type="Texture" id=7]
 [ext_resource path="res://Metronome/Assets/metronome_01.wav" type="AudioStream" id=8]
 [ext_resource path="res://Metronome/Assets/Icons/play.png" type="Texture" id=9]
+[ext_resource path="res://Metronome/Signals.gd" type="Script" id=10]
+[ext_resource path="res://Metronome/Inputs.gd" type="Script" id=11]
+[ext_resource path="res://Metronome/Assets/Icons/warning.png" type="Texture" id=12]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.14902, 0.172549, 0.231373, 1 )
@@ -48,6 +51,7 @@ custom_constants/separation = 10
 margin_right = 10.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 10, 10 )
+hint_tooltip = "Tempo display : [ 1/1, 1/4, 1/16, 1/128 ]"
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
@@ -75,6 +79,7 @@ custom_constants/separation = 10
 margin_right = 10.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 10, 10 )
+hint_tooltip = "Time duration : [Minutes, Seconds, Subdivisions]"
 texture = ExtResource( 4 )
 expand = true
 stretch_mode = 6
@@ -102,6 +107,7 @@ custom_constants/separation = 10
 margin_right = 10.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 10, 10 )
+hint_tooltip = "Time Signature : BPM - Bar / Beat"
 texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
@@ -119,7 +125,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextEditBeat" type="TextEdit" parent="Main/ContainerSignature"]
+[node name="TextEditSignature" type="TextEdit" parent="Main/ContainerSignature"]
 margin_left = 66.0
 margin_right = 102.0
 margin_bottom = 24.0
@@ -131,6 +137,16 @@ caret_blink_speed = 0.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="IconWarning" type="TextureRect" parent="Main/ContainerSignature"]
+visible = false
+margin_left = 112.0
+margin_right = 122.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 10, 10 )
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
 
 [node name="sep_03" type="VSeparator" parent="Main"]
 margin_left = 396.0
@@ -150,6 +166,7 @@ __meta__ = {
 margin_right = 10.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 10, 10 )
+hint_tooltip = "Enable Metronome Clic on : [Measure, Beats, Sixteenths]"
 texture = ExtResource( 6 )
 expand = true
 stretch_mode = 6
@@ -198,6 +215,7 @@ margin_bottom = 24.0
 margin_right = 24.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
+hint_tooltip = "Stop Metronome"
 icon = ExtResource( 7 )
 flat = true
 expand_icon = true
@@ -207,6 +225,7 @@ margin_left = 28.0
 margin_right = 52.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
+hint_tooltip = "Play / Pause Metronome"
 icon = ExtResource( 9 )
 flat = true
 expand_icon = true
@@ -223,5 +242,11 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Signals" type="Node" parent="Scripts"]
+script = ExtResource( 10 )
 
 [node name="Inputs" type="Node" parent="Scripts"]
+script = ExtResource( 11 )
+[connection signal="gui_input" from="Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_gui_input"]
+[connection signal="text_changed" from="Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_text_changed"]
+[connection signal="gui_input" from="Main/ContainerSignature/TextEditSignature" to="Scripts/Signals" method="_on_TextEditBeat_gui_input"]
+[connection signal="text_changed" from="Main/ContainerSignature/TextEditSignature" to="Scripts/Signals" method="_on_TextEditSignature_text_changed"]
