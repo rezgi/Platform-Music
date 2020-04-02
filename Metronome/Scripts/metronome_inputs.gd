@@ -4,6 +4,14 @@ extends Node
 Utility functions for checking and parsing UI inputs.
 """
 
+#onready var btn_play := get_node("../../Main/ContainerControls/ButtonPlay")
+#
+#func _init() -> void:
+#	print(btn_play)
+#
+#func _ready() -> void:
+#	print(btn_play)
+
 func parse_input_bpm(text: String) -> int:
 	return 0 if int(text) > 320 or int(text) < 0 else int(text)
 
@@ -39,11 +47,23 @@ func warning_message(check_status: int, text_input: TextEdit, icon_warning: Text
 		text_input.set("custom_colors/font_color", Color(0.88, 0.88, 0.88))
 		icon_warning.visible = false
 
-func disable_play(btn_play: TextureButton, warning_play: String) -> void:
+func disable_play(btn_play: TextureButton, btn_stop: Button, warning_play: String) -> void:
 	btn_play.modulate = Color("32ffffff")
 	btn_play.hint_tooltip = warning_play
+	btn_stop.hint_tooltip = warning_play
+	btn_play.disabled = true
+	btn_stop.disabled = true
 
-func check_color(input_is_ok: bool, status: String) -> Color:
-	if status == "entered": return Color("#6a9dea") if input_is_ok else Color("32ffffff")
-	else: return Color.white if input_is_ok else Color("32ffffff")
+func check_color(input_is_ok: bool, status: int) -> Color:
+	match status:
+		0:
+			return Color.white
+		1:
+			return Color("32ffffff")
+		2:
+			return Color("#6a9dea") if input_is_ok else Color("32ffffff")
+		3:
+			return Color.white if input_is_ok else Color("32ffffff")
+		_:
+			return Color.red
 

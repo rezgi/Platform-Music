@@ -1,18 +1,12 @@
 extends Node
 
-#	check how to trigger event on tempo change
-#	check how to use triplet & dotted
-
-# CDS :
+#	CDS :
 #	start and stop need to send corresponding signals and know if started or not outside
 #	metronome has to send data, first through signal, then through UDF
 #	global variables should be in CDS
 
-# UI 
-#	inputs become red when not in right format
-#	BPM ranged int (1,360) / bar ranged int (1, 64) / beat menu (2,4,8,16,32,64)
-#	no 1/1 & 1/128 on triplet / dotted
-#	can enter tempo directly ? compute new measure over 5 ? how to have ranged selection within label ?
+#	check how to trigger event on tempo change
+#	check how to use triplet & dotted
 
 onready var m := preload("res://Metronome/Scripts/metronome_core.gd").new()
 

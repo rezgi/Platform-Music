@@ -10,7 +10,9 @@ Tempo grid
 ## 0.4
 UI, CDS & UDF implementation
 
-- [ ] connect all input signals to a dedicated script
+- [x] connect all input signals to a dedicated script
+- [ ] messy play button logic, will implement UDF which should clean the design flow
+- [ ] need to figure out how to load nodes in *inputs* script and wait `ready` to instance it in *signals* script
 - [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
 - [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
 - [ ] check if possible to use svg or icon font for UI icons, quality isn't good for the moment
@@ -35,13 +37,13 @@ UI, CDS & UDF implementation
   - unilateral dataflow (UDF) experimenting and connect metronome
 - 0.5 : 
   - **tempo grid :**
-  - reads & displays tempo UDF
-  - time cursor
+  - read & display tempo UDF
   - bpm subdivisions
+  - time cursor
   - play, pause, stop
   - total time duration
   - zoom in & out
-  - one audio layer test
+  - one audio layer
 - 0.6 : 
   - **audio project creator / importer :**
   - bulk audio import : auto-creation, naming and injection of audio nodes

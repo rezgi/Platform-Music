@@ -23,11 +23,11 @@ scancode = 1
 [sub_resource type="ShortCut" id=3]
 shortcut = SubResource( 2 )
 
-[sub_resource type="InputEventKey" id=6]
+[sub_resource type="InputEventKey" id=4]
 scancode = 39
 
-[sub_resource type="ShortCut" id=7]
-shortcut = SubResource( 6 )
+[sub_resource type="ShortCut" id=5]
+shortcut = SubResource( 4 )
 
 [node name="Metronome_UI" type="Control"]
 margin_right = 760.0
@@ -55,14 +55,13 @@ __meta__ = {
 }
 
 [node name="ContainerTempo" type="HBoxContainer" parent="Main"]
-margin_left = 20.0
-margin_right = 124.0
-margin_bottom = 24.0
+margin_right = 104.0
+margin_bottom = 26.0
 custom_constants/separation = 10
 
 [node name="IconTempo" type="TextureRect" parent="Main/ContainerTempo"]
 margin_right = 10.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
 hint_tooltip = "Tempo display : [ 1/1, 1/4, 1/16, 1/128 ]"
 texture = ExtResource( 3 )
@@ -71,26 +70,26 @@ stretch_mode = 6
 
 [node name="LabelTempo" type="Label" parent="Main/ContainerTempo"]
 margin_left = 20.0
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 104.0
-margin_bottom = 19.0
+margin_bottom = 20.0
 text = "1 . 1 . 1 . 120"
 
 [node name="sep_01" type="VSeparator" parent="Main"]
-margin_left = 134.0
-margin_right = 154.0
-margin_bottom = 24.0
+margin_left = 114.0
+margin_right = 134.0
+margin_bottom = 26.0
 custom_constants/separation = 20
 
 [node name="ContainerTime" type="HBoxContainer" parent="Main"]
-margin_left = 164.0
-margin_right = 264.0
-margin_bottom = 24.0
+margin_left = 144.0
+margin_right = 244.0
+margin_bottom = 26.0
 custom_constants/separation = 10
 
 [node name="IconTime" type="TextureRect" parent="Main/ContainerTime"]
 margin_right = 10.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
 hint_tooltip = "Time duration : [Minutes, Seconds, Subdivisions]"
 texture = ExtResource( 4 )
@@ -99,26 +98,26 @@ stretch_mode = 6
 
 [node name="LabelTime" type="Label" parent="Main/ContainerTime"]
 margin_left = 20.0
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 100.0
-margin_bottom = 19.0
+margin_bottom = 20.0
 text = "00 : 02 : 125"
 
 [node name="sep_02" type="VSeparator" parent="Main"]
-margin_left = 274.0
-margin_right = 294.0
-margin_bottom = 24.0
+margin_left = 254.0
+margin_right = 274.0
+margin_bottom = 26.0
 custom_constants/separation = 20
 
 [node name="ContainerSignature" type="HBoxContainer" parent="Main"]
-margin_left = 304.0
-margin_right = 406.0
-margin_bottom = 24.0
+margin_left = 284.0
+margin_right = 386.0
+margin_bottom = 26.0
 custom_constants/separation = 10
 
 [node name="IconSignature" type="TextureRect" parent="Main/ContainerSignature"]
 margin_right = 10.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
 hint_tooltip = "Time Signature : BPM - Bar / Beat"
 texture = ExtResource( 5 )
@@ -128,7 +127,7 @@ stretch_mode = 6
 [node name="TextEditBPM" type="TextEdit" parent="Main/ContainerSignature"]
 margin_left = 20.0
 margin_right = 56.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 36, 20 )
 custom_styles/normal = SubResource( 1 )
 text = "120"
@@ -141,7 +140,7 @@ __meta__ = {
 [node name="TextEditSignature" type="TextEdit" parent="Main/ContainerSignature"]
 margin_left = 66.0
 margin_right = 102.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 36, 20 )
 custom_styles/normal = SubResource( 1 )
 text = "4/4"
@@ -162,22 +161,22 @@ expand = true
 stretch_mode = 6
 
 [node name="sep_03" type="VSeparator" parent="Main"]
-margin_left = 416.0
-margin_right = 436.0
-margin_bottom = 24.0
+margin_left = 396.0
+margin_right = 416.0
+margin_bottom = 26.0
 custom_constants/separation = 20
 
 [node name="ContainerSound" type="HBoxContainer" parent="Main"]
-margin_left = 446.0
-margin_right = 623.0
-margin_bottom = 24.0
+margin_left = 426.0
+margin_right = 603.0
+margin_bottom = 26.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="IconSound" type="TextureRect" parent="Main/ContainerSound"]
 margin_right = 10.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
 hint_tooltip = "Enable Metronome Clic on : [Measure, Beats, Sixteenths]"
 texture = ExtResource( 6 )
@@ -187,7 +186,7 @@ stretch_mode = 6
 [node name="CheckBoxSoundMeasure" type="CheckBox" parent="Main/ContainerSound"]
 margin_left = 14.0
 margin_right = 63.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 pressed = true
 text = "1/1"
 __meta__ = {
@@ -197,7 +196,7 @@ __meta__ = {
 [node name="CheckBoxSoundQuart" type="CheckBox" parent="Main/ContainerSound"]
 margin_left = 67.0
 margin_right = 116.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 pressed = true
 text = "1/4"
 __meta__ = {
@@ -207,28 +206,28 @@ __meta__ = {
 [node name="CheckBoxSoundSixteen" type="CheckBox" parent="Main/ContainerSound"]
 margin_left = 120.0
 margin_right = 177.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 text = "1/16"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="sep_04" type="VSeparator" parent="Main"]
-margin_left = 633.0
-margin_right = 653.0
-margin_bottom = 24.0
+margin_left = 613.0
+margin_right = 633.0
+margin_bottom = 26.0
 custom_constants/separation = 20
 
 [node name="ContainerControls" type="HBoxContainer" parent="Main"]
-margin_left = 663.0
-margin_right = 703.0
-margin_bottom = 24.0
+margin_left = 643.0
+margin_right = 685.0
+margin_bottom = 26.0
 
 [node name="ButtonStop" type="Button" parent="Main/ContainerControls"]
 modulate = Color( 1, 1, 1, 0.196078 )
-margin_right = 24.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 24, 24 )
+margin_right = 26.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 26, 26 )
 hint_tooltip = "Stop Metronome"
 shortcut = SubResource( 3 )
 icon = ExtResource( 7 )
@@ -236,13 +235,13 @@ flat = true
 expand_icon = true
 
 [node name="ButtonPlay" type="TextureButton" parent="Main/ContainerControls"]
-margin_left = 28.0
-margin_right = 40.0
-margin_bottom = 12.0
+margin_left = 30.0
+margin_right = 42.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 12, 12 )
 hint_tooltip = "Play / Pause Metronome"
 toggle_mode = true
-shortcut = SubResource( 7 )
+shortcut = SubResource( 5 )
 texture_normal = ExtResource( 9 )
 texture_pressed = ExtResource( 13 )
 expand = true
