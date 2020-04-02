@@ -1,57 +1,37 @@
 # TODO
 
-## 0.4
-UI, CDS & UDF implementation
+## 0.5
+Tempo grid
 
-- [x] Make UI : Metronome top bar with inputs
-- [ ] connect all input signals to a dedicated script
-- [x] lock input fields for no error possibility (BPM, time signature)
-- [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
-- [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
-- [ ] make togglable UI tool to play metronome in any scene
 - [ ] experiment wav exports with 0db zones and compare file sizes
 - [ ] experiment compression of wav files (and decompression in godot) and compare file size
 - [ ] experiment parsing XML from Cubase
+
+## 0.4
+UI, CDS & UDF implementation
+
+- [ ] connect all input signals to a dedicated script
+- [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
+- [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
+- [ ] check if possible to use svg or icon font for UI icons, quality isn't good for the moment
+- [x] Make UI : Metronome top bar with inputs
+- [x] lock input fields for no error possibility (BPM, time signature)
 - [x] make the metronome (and time_start init) on UI trigger
 - [x] need a bool to activate counter in process, probably a start() and stop() function
 - [x] export variables in the node settings for metronome debug ? Not needed for the moment, check if need of other parameters later
 - [x] convert metronome sounds to .wav
 
-## 0.3
-Switch Metronome algorithm from state machine to functional paradigm
-
-- [x] function that converts tempo to time by taking into account signature types
-- [x] made a function that converts time to tempo regardless of signature types
-- [x] leave only primary array and make a function that computes any note wanted (dotted, trippled, 1/32, etc.)
-- [x] make a function or enum to get only one array ? See for later
-- [x] tempo_to_time
-- [x] bug with image that godot doesn't find -> bug when root node is Node, solved by using Control node instead
-- [x] think about how to separate dotted ? maybe not needed
-- [x] is join_tempo needed ? removed it for the moment
-- [x] maybe delay (remainder of tempo divisions) should be taken into account
-- [x] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
-- [x] dotted_time
-- [x] divisions work well. implement secondary tempo
-- [x] decide on how far subdivisions should go and how to implement it
-- [x] time_to_tempo still works incrementally (and buggy), try to divide time and compute remainders
-- [x] used OS.get_system_time_msecs() insted of ticks, better approach, no float comparison, just remainder
-- [x] comparing floats is tricky, used epsilon method, have doubts about the smallest comparison
-- [x] because ticks are small, sometimes comparison is true multiple times
-- [x] ticks counting doesn't start at 0, used in ready for the moment, see if problem
-- [x] start OS.time at start of metronome, then compare time passed and convert to tempo
-- [x] use already made signature conversion functions
-- [x] separate from the start : metronome logic / UI / data / tools
-- [x] set engine to 60FPS
-- [x] make only pure functions and pass the data tree
-- [x] should tempo data be an array ? maybe simpler to pass around, dict can be returned in a function
-
 ---
 
 ## Roadmap
 
+- 0.1 :
+  - experimenting with MDM addon
+- 0.2 :
+  - metronome with state machine paradigm
 - 0.3 :
   - full metronome that converts time and tempo in a single data structure and adapts to FPS
-- 0.4 :
+**- 0.4 (WIP) :**
   - unilateral dataflow (UDF) experimenting and connect metronome
 - 0.5 : 
   - **tempo grid :**
@@ -121,8 +101,35 @@ Switch Metronome algorithm from state machine to functional paradigm
   - nodal UI to manage interactions, data communication, signal & events
   - input auto-connector : scan scene, select UI inputs and connect chosen signals, gather signals into one that's connected to UDF
 
-
 ---
+
+## 0.3
+Switch Metronome algorithm from state machine to functional paradigm
+
+- [x] function that converts tempo to time by taking into account signature types
+- [x] made a function that converts time to tempo regardless of signature types
+- [x] leave only primary array and make a function that computes any note wanted (dotted, trippled, 1/32, etc.)
+- [x] make a function or enum to get only one array ? See for later
+- [x] tempo_to_time
+- [x] bug with image that godot doesn't find -> bug when root node is Node, solved by using Control node instead
+- [x] think about how to separate dotted ? maybe not needed
+- [x] is join_tempo needed ? removed it for the moment
+- [x] maybe delay (remainder of tempo divisions) should be taken into account
+- [x] tempo data structure still not clear : 1 array of all subdivisions ? 2 arrays for primary & secondary ?
+- [x] dotted_time
+- [x] divisions work well. implement secondary tempo
+- [x] decide on how far subdivisions should go and how to implement it
+- [x] time_to_tempo still works incrementally (and buggy), try to divide time and compute remainders
+- [x] used OS.get_system_time_msecs() insted of ticks, better approach, no float comparison, just remainder
+- [x] comparing floats is tricky, used epsilon method, have doubts about the smallest comparison
+- [x] because ticks are small, sometimes comparison is true multiple times
+- [x] ticks counting doesn't start at 0, used in ready for the moment, see if problem
+- [x] start OS.time at start of metronome, then compare time passed and convert to tempo
+- [x] use already made signature conversion functions
+- [x] separate from the start : metronome logic / UI / data / tools
+- [x] set engine to 60FPS
+- [x] make only pure functions and pass the data tree
+- [x] should tempo data be an array ? maybe simpler to pass around, dict can be returned in a function
 
 ## 0.2
 Working metronome with state machine paradigm
