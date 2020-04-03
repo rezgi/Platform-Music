@@ -10,12 +10,13 @@ Tempo grid
 ## 0.4
 UI, CDS & UDF implementation
 
-- [x] connect all input signals to a dedicated script
+- [ ] Check how to implement a generic `send` function that doesn't need a pre-existing function in `action.gd` -> send({data_field : "metronome", type: "str", val : 1, val : 2})
 - [ ] messy play button logic, will implement UDF which should clean the design flow
-- [ ] need to figure out how to load nodes in *inputs* script and wait `ready` to instance it in *signals* script
-- [ ] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
+- [ ] need to figure out how to load nodes in `inputs` script and wait `ready` to instance it in `signals` script
 - [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
 - [ ] check if possible to use svg or icon font for UI icons, quality isn't good for the moment
+- [x] connect all input signals to a dedicated script
+- [x] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
 - [x] Make UI : Metronome top bar with inputs
 - [x] lock input fields for no error possibility (BPM, time signature)
 - [x] make the metronome (and time_start init) on UI trigger

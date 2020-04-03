@@ -16,7 +16,14 @@ _global_script_class_icons={
 [application]
 
 config/name="13 - Musilogy"
+run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+data="*res://Globals/UDF/data.gd"
+action="*res://Globals/UDF/action.gd"
+reducers="*res://Globals/UDF/reducers.gd"
 
 [debug]
 

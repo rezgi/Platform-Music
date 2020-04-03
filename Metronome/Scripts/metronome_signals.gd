@@ -7,7 +7,7 @@ Manage Metronome UI signals.
 # button status logic still messy
 # button bug when input error and put back correct values
 # Where do (Apostrophe) in play and () in stop hints come from ?
-# 'Enter' shortcut in inputs should confirm data and focus out
+# 'Enter' shortcut in inputs should confirm data and focus out, check shortcuts node option
 # keyboard shortcuts (Play / Stop) don't work correctly
 
 onready var i := preload("res://Metronome/Scripts/metronome_inputs.gd").new()
@@ -35,6 +35,7 @@ func _on_TextEditBPM_text_changed() -> void:
 	i.warning_message(bpm, input_bpm, icon_warning, warning_bpm)
 	
 	if not bpm:
+		data.send(action.metronome_check_input(false))
 		input_is_ok = false
 		i.disable_play(btn_play, btn_stop, warning_play)
 	else:

@@ -111,8 +111,9 @@ custom_constants/separation = 20
 
 [node name="ContainerSignature" type="HBoxContainer" parent="Main"]
 margin_left = 284.0
-margin_right = 386.0
+margin_right = 400.0
 margin_bottom = 26.0
+rect_min_size = Vector2( 116, 0 )
 custom_constants/separation = 10
 
 [node name="IconSignature" type="TextureRect" parent="Main/ContainerSignature"]
@@ -154,21 +155,21 @@ __meta__ = {
 visible = false
 margin_left = 112.0
 margin_right = 126.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 14, 14 )
 texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
 
 [node name="sep_03" type="VSeparator" parent="Main"]
-margin_left = 396.0
-margin_right = 416.0
+margin_left = 410.0
+margin_right = 430.0
 margin_bottom = 26.0
 custom_constants/separation = 20
 
 [node name="ContainerSound" type="HBoxContainer" parent="Main"]
-margin_left = 426.0
-margin_right = 603.0
+margin_left = 440.0
+margin_right = 617.0
 margin_bottom = 26.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -213,14 +214,14 @@ __meta__ = {
 }
 
 [node name="sep_04" type="VSeparator" parent="Main"]
-margin_left = 613.0
-margin_right = 633.0
+margin_left = 627.0
+margin_right = 647.0
 margin_bottom = 26.0
 custom_constants/separation = 20
 
 [node name="ContainerControls" type="HBoxContainer" parent="Main"]
-margin_left = 643.0
-margin_right = 685.0
+margin_left = 657.0
+margin_right = 699.0
 margin_bottom = 26.0
 
 [node name="ButtonStop" type="Button" parent="Main/ContainerControls"]
