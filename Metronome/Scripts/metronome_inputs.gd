@@ -56,14 +56,9 @@ func disable_play(btn_play: TextureButton, btn_stop: Button, warning_play: Strin
 
 func check_color(input_is_ok: bool, status: int) -> Color:
 	match status:
-		0:
-			return Color.white
-		1:
-			return Color("32ffffff")
-		2:
-			return Color("#6a9dea") if input_is_ok else Color("32ffffff")
-		3:
-			return Color.white if input_is_ok else Color("32ffffff")
-		_:
-			return Color.red
+		0: return Color.white
+		1: return Color("32ffffff")
+		2: return Color("#6a9dea") if input_is_ok else Color("32ffffff")
+		3: return Color.white if input_is_ok else Color("32ffffff")
+		_: return Color.red
 

@@ -35,7 +35,8 @@ func _on_TextEditBPM_text_changed() -> void:
 	i.warning_message(bpm, input_bpm, icon_warning, warning_bpm)
 	
 	if not bpm:
-		data.send(action.metronome_check_input(false))
+		flow.send({type = "input_check", value = false})
+		print("print : ", flow.data)
 		input_is_ok = false
 		i.disable_play(btn_play, btn_stop, warning_play)
 	else:

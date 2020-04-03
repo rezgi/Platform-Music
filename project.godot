@@ -21,9 +21,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-data="*res://Globals/UDF/data.gd"
-action="*res://Globals/UDF/action.gd"
-reducers="*res://Globals/UDF/reducers.gd"
+flow="*res://Globals/flow.gd"
 
 [debug]
 
