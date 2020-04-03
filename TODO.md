@@ -8,13 +8,16 @@ Tempo grid
 - [ ] experiment parsing XML from Cubase
 
 ## 0.4
-UI, CDS & UDF implementation
+UI, CDS & UDF implementation called *Flow*
 
-- [ ] Check how to implement a generic `send` function that doesn't need a pre-existing function in `action.gd` -> send({data_field : "metronome", type: "str", val : 1, val : 2})
-- [ ] messy play button logic, will implement UDF which should clean the design flow
+- [ ] build generic dataflow with new *flow* architecture
+- [ ] figure out how to make the data flow within the scene tree and the new dataflow
+- [ ] procedural scan and assign of input nodes and their signals, scripts and their methods with data from top
+- [ ] messy play button logic, UDF should clean the design flow
 - [ ] need to figure out how to load nodes in `inputs` script and wait `ready` to instance it in `signals` script
 - [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
 - [ ] check if possible to use svg or icon font for UI icons, quality isn't good for the moment
+- [x] implement a `send` function without a pre-existing function
 - [x] connect all input signals to a dedicated script
 - [x] implement Unidirectional DataFlow (UDF) inspired by godot Redux and experiment with CDS (redux store)
 - [x] Make UI : Metronome top bar with inputs

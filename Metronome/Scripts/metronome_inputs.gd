@@ -1,16 +1,9 @@
 extends Node
 
 """
-Utility functions for checking and parsing UI inputs.
+Utility functions for parsing UI inputs and checking their integrity.
 """
 
-#onready var btn_play := get_node("../../Main/ContainerControls/ButtonPlay")
-#
-#func _init() -> void:
-#	print(btn_play)
-#
-#func _ready() -> void:
-#	print(btn_play)
 
 func parse_input_bpm(text: String) -> int:
 	return 0 if int(text) > 320 or int(text) < 0 else int(text)

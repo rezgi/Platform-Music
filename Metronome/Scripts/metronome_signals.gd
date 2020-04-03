@@ -4,6 +4,9 @@ extends Node
 Manage Metronome UI signals.
 """
 
+# iterate through input nodes and connect them, assign send() to each signal with procedural name and value
+# use a dictionary for what input and signal to store
+
 # button status logic still messy
 # button bug when input error and put back correct values
 # Where do (Apostrophe) in play and () in stop hints come from ?
@@ -17,6 +20,7 @@ onready var input_signature := get_node("../../Main/ContainerSignature/TextEditS
 onready var btn_play := get_node("../../Main/ContainerControls/ButtonPlay")
 onready var btn_stop := get_node("../../Main/ContainerControls/ButtonStop")
 
+# put following vars in flow.data
 enum btn_status {ENABLED, DISABLED, ENTERED, EXITED}
 
 var warning_bpm := "BPM must be an integer between 1 and 320"
@@ -27,6 +31,9 @@ var input_is_ok := true
 var new_signature := {bpm = 0, bar = 0, beat = 0}
 var metronome_clics := {measure = true, beat = true, sixteen = false}
 var metronome_status := {play = false, pause = false}
+
+#func _ready() -> void:
+#	print(get_node("../").get_children()[0].name)
 
 ##	Signature Inputs
 
