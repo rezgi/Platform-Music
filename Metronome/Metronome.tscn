@@ -278,7 +278,6 @@ script = ExtResource( 17 )
 
 [node name="Effects" type="Node" parent="Scripts"]
 script = ExtResource( 16 )
-[connection signal="ready" from="." to="." method="_on_Metronome_ready"]
 [connection signal="gui_input" from="UI/Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_gui_input"]
 [connection signal="text_changed" from="UI/Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_text_changed"]
 [connection signal="gui_input" from="UI/Main/ContainerSignature/TextEditSignature" to="Scripts/Signals" method="_on_TextEditBeat_gui_input"]

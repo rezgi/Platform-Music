@@ -1,13 +1,15 @@
-extends "res://Metronome/Scripts/metronome.gd"
+extends Node
 
 """
 UI inputs parsers and checkers.
 """
 
-func parse_input_bpm(text: String) -> int:
+# put input nodes here ?
+
+func parse_bpm(text: String) -> int:
 	return 0 if int(text) > 320 or int(text) < 0 else int(text)
 
-func parse_input_signature(text: String) -> Dictionary:
+func parse_signature(text: String) -> Dictionary:
 	var splitted = text.split("/", false, 1)
 	
 	if splitted.size() != 2 or text.count("/") != 1: return {"check" : 0}

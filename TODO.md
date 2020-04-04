@@ -10,12 +10,11 @@ Tempo grid
 ## 0.4
 UI, CDS & UDF implementation called *Flow*
 
-- [ ] figure out how to make the data flow within the scene tree and the new dataflow
 - [ ] build generic dataflow with new *flow* architecture
-- [ ] procedural scan and auto-assign signals to send(type=signal) ?
-- [ ] messy play button logic, UDF should clean the design flow
-- [ ] have one signal fired for any UI elements change, send UI element data (button, inputs)
+- [ ] how to manage flow data mutations and diff callbacks
 - [ ] check if possible to use svg or icon font for UI icons, quality isn't good for the moment
+- [x] figure out how to make the data flow within the scene tree and the new dataflow
+- [x] messy play button logic, UDF should clean the design flow
 - [x] need to figure out how to load nodes in `inputs` script and wait `ready` to instance it in `signals` script
 - [x] implement a `send` function without a pre-existing function
 - [x] connect all input signals to a dedicated script
