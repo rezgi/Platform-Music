@@ -1,9 +1,8 @@
-extends Node
+extends "res://Metronome/Scripts/metronome.gd"
 
 """
-Utility functions for parsing UI inputs and checking their integrity.
+UI inputs parsers and checkers.
 """
-
 
 func parse_input_bpm(text: String) -> int:
 	return 0 if int(text) > 320 or int(text) < 0 else int(text)

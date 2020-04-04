@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Metronome/Scripts/metronome_core.gd" type="Script" id=1]
 [ext_resource path="res://Metronome/Scripts/metronome_controls.gd" type="Script" id=2]
@@ -13,7 +13,9 @@
 [ext_resource path="res://Metronome/Scripts/metronome_inputs.gd" type="Script" id=11]
 [ext_resource path="res://Metronome/Assets/Icons/warning.png" type="Texture" id=12]
 [ext_resource path="res://Metronome/Assets/Icons/pause.png" type="Texture" id=13]
-[ext_resource path="res://Metronome/Scripts/metronome_UI.gd" type="Script" id=14]
+[ext_resource path="res://Metronome/Scripts/metronome.gd" type="Script" id=14]
+[ext_resource path="res://Metronome/Scripts/metronome_effects.gd" type="Script" id=16]
+[ext_resource path="res://Metronome/Scripts/metronome_updates.gd" type="Script" id=17]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.14902, 0.172549, 0.231373, 1 )
@@ -30,16 +32,18 @@ scancode = 39
 [sub_resource type="ShortCut" id=5]
 shortcut = SubResource( 4 )
 
-[node name="Metronome_UI" type="Control"]
+[node name="Metronome" type="Node"]
+script = ExtResource( 14 )
+
+[node name="UI" type="Control" parent="."]
 margin_right = 760.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 740, 32 )
-script = ExtResource( 14 )
+rect_min_size = Vector2( 760, 40 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="UI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.2, 0.227451, 0.309804, 1 )
@@ -47,21 +51,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Main" type="HBoxContainer" parent="."]
+[node name="Main" type="HBoxContainer" parent="UI"]
 margin_left = 20.0
 margin_top = 8.0
+margin_right = 719.0
+margin_bottom = 34.0
 custom_constants/separation = 10
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ContainerTempo" type="HBoxContainer" parent="Main"]
+[node name="ContainerTempo" type="HBoxContainer" parent="UI/Main"]
 margin_right = 104.0
 margin_bottom = 26.0
 custom_constants/separation = 10
 
-[node name="IconTempo" type="TextureRect" parent="Main/ContainerTempo"]
+[node name="IconTempo" type="TextureRect" parent="UI/Main/ContainerTempo"]
 margin_right = 10.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
@@ -70,26 +76,26 @@ texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
 
-[node name="LabelTempo" type="Label" parent="Main/ContainerTempo"]
+[node name="LabelTempo" type="Label" parent="UI/Main/ContainerTempo"]
 margin_left = 20.0
 margin_top = 6.0
 margin_right = 104.0
 margin_bottom = 20.0
 text = "1 . 1 . 1 . 120"
 
-[node name="sep_01" type="VSeparator" parent="Main"]
+[node name="sep_01" type="VSeparator" parent="UI/Main"]
 margin_left = 114.0
 margin_right = 134.0
 margin_bottom = 26.0
 custom_constants/separation = 20
 
-[node name="ContainerTime" type="HBoxContainer" parent="Main"]
+[node name="ContainerTime" type="HBoxContainer" parent="UI/Main"]
 margin_left = 144.0
 margin_right = 244.0
 margin_bottom = 26.0
 custom_constants/separation = 10
 
-[node name="IconTime" type="TextureRect" parent="Main/ContainerTime"]
+[node name="IconTime" type="TextureRect" parent="UI/Main/ContainerTime"]
 margin_right = 10.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
@@ -98,27 +104,27 @@ texture = ExtResource( 4 )
 expand = true
 stretch_mode = 6
 
-[node name="LabelTime" type="Label" parent="Main/ContainerTime"]
+[node name="LabelTime" type="Label" parent="UI/Main/ContainerTime"]
 margin_left = 20.0
 margin_top = 6.0
 margin_right = 100.0
 margin_bottom = 20.0
 text = "00 : 02 : 125"
 
-[node name="sep_02" type="VSeparator" parent="Main"]
+[node name="sep_02" type="VSeparator" parent="UI/Main"]
 margin_left = 254.0
 margin_right = 274.0
 margin_bottom = 26.0
 custom_constants/separation = 20
 
-[node name="ContainerSignature" type="HBoxContainer" parent="Main"]
+[node name="ContainerSignature" type="HBoxContainer" parent="UI/Main"]
 margin_left = 284.0
 margin_right = 400.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 116, 0 )
 custom_constants/separation = 10
 
-[node name="IconSignature" type="TextureRect" parent="Main/ContainerSignature"]
+[node name="IconSignature" type="TextureRect" parent="UI/Main/ContainerSignature"]
 margin_right = 10.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
@@ -127,7 +133,7 @@ texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 
-[node name="TextEditBPM" type="TextEdit" parent="Main/ContainerSignature"]
+[node name="TextEditBPM" type="TextEdit" parent="UI/Main/ContainerSignature"]
 margin_left = 20.0
 margin_right = 56.0
 margin_bottom = 26.0
@@ -140,7 +146,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextEditSignature" type="TextEdit" parent="Main/ContainerSignature"]
+[node name="TextEditSignature" type="TextEdit" parent="UI/Main/ContainerSignature"]
 margin_left = 66.0
 margin_right = 102.0
 margin_bottom = 26.0
@@ -153,7 +159,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="IconWarning" type="TextureRect" parent="Main/ContainerSignature"]
+[node name="IconWarning" type="TextureRect" parent="UI/Main/ContainerSignature"]
 visible = false
 margin_left = 112.0
 margin_right = 126.0
@@ -163,13 +169,13 @@ texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
 
-[node name="sep_03" type="VSeparator" parent="Main"]
+[node name="sep_03" type="VSeparator" parent="UI/Main"]
 margin_left = 410.0
 margin_right = 430.0
 margin_bottom = 26.0
 custom_constants/separation = 20
 
-[node name="ContainerSound" type="HBoxContainer" parent="Main"]
+[node name="ContainerSound" type="HBoxContainer" parent="UI/Main"]
 margin_left = 440.0
 margin_right = 617.0
 margin_bottom = 26.0
@@ -177,7 +183,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="IconSound" type="TextureRect" parent="Main/ContainerSound"]
+[node name="IconSound" type="TextureRect" parent="UI/Main/ContainerSound"]
 margin_right = 10.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 10, 10 )
@@ -186,7 +192,7 @@ texture = ExtResource( 6 )
 expand = true
 stretch_mode = 6
 
-[node name="CheckBoxSoundMeasure" type="CheckBox" parent="Main/ContainerSound"]
+[node name="CheckBoxSoundMeasure" type="CheckBox" parent="UI/Main/ContainerSound"]
 margin_left = 14.0
 margin_right = 63.0
 margin_bottom = 26.0
@@ -196,7 +202,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CheckBoxSoundQuart" type="CheckBox" parent="Main/ContainerSound"]
+[node name="CheckBoxSoundQuart" type="CheckBox" parent="UI/Main/ContainerSound"]
 margin_left = 67.0
 margin_right = 116.0
 margin_bottom = 26.0
@@ -206,7 +212,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CheckBoxSoundSixteen" type="CheckBox" parent="Main/ContainerSound"]
+[node name="CheckBoxSoundSixteen" type="CheckBox" parent="UI/Main/ContainerSound"]
 margin_left = 120.0
 margin_right = 177.0
 margin_bottom = 26.0
@@ -215,18 +221,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="sep_04" type="VSeparator" parent="Main"]
+[node name="sep_04" type="VSeparator" parent="UI/Main"]
 margin_left = 627.0
 margin_right = 647.0
 margin_bottom = 26.0
 custom_constants/separation = 20
 
-[node name="ContainerControls" type="HBoxContainer" parent="Main"]
+[node name="ContainerControls" type="HBoxContainer" parent="UI/Main"]
 margin_left = 657.0
 margin_right = 699.0
 margin_bottom = 26.0
 
-[node name="ButtonStop" type="Button" parent="Main/ContainerControls"]
+[node name="ButtonStop" type="Button" parent="UI/Main/ContainerControls"]
 modulate = Color( 1, 1, 1, 0.196078 )
 margin_right = 26.0
 margin_bottom = 26.0
@@ -237,7 +243,7 @@ icon = ExtResource( 7 )
 flat = true
 expand_icon = true
 
-[node name="ButtonPlay" type="TextureButton" parent="Main/ContainerControls"]
+[node name="ButtonPlay" type="TextureButton" parent="UI/Main/ContainerControls"]
 margin_left = 30.0
 margin_right = 42.0
 margin_bottom = 26.0
@@ -266,16 +272,23 @@ script = ExtResource( 2 )
 
 [node name="Core" type="Node" parent="Scripts"]
 script = ExtResource( 1 )
-[connection signal="gui_input" from="Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_gui_input"]
-[connection signal="text_changed" from="Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_text_changed"]
-[connection signal="gui_input" from="Main/ContainerSignature/TextEditSignature" to="Scripts/Signals" method="_on_TextEditBeat_gui_input"]
-[connection signal="text_changed" from="Main/ContainerSignature/TextEditSignature" to="Scripts/Signals" method="_on_TextEditSignature_text_changed"]
-[connection signal="toggled" from="Main/ContainerSound/CheckBoxSoundMeasure" to="Scripts/Signals" method="_on_CheckBoxSoundMeasure_toggled"]
-[connection signal="toggled" from="Main/ContainerSound/CheckBoxSoundQuart" to="Scripts/Signals" method="_on_CheckBoxSoundQuart_toggled"]
-[connection signal="toggled" from="Main/ContainerSound/CheckBoxSoundSixteen" to="Scripts/Signals" method="_on_CheckBoxSoundSixteen_toggled"]
-[connection signal="mouse_entered" from="Main/ContainerControls/ButtonStop" to="Scripts/Signals" method="_on_ButtonStop_mouse_entered"]
-[connection signal="mouse_exited" from="Main/ContainerControls/ButtonStop" to="Scripts/Signals" method="_on_ButtonStop_mouse_exited"]
-[connection signal="pressed" from="Main/ContainerControls/ButtonStop" to="Scripts/Signals" method="_on_ButtonStop_pressed"]
-[connection signal="mouse_entered" from="Main/ContainerControls/ButtonPlay" to="Scripts/Signals" method="_on_ButtonPlay_mouse_entered"]
-[connection signal="mouse_exited" from="Main/ContainerControls/ButtonPlay" to="Scripts/Signals" method="_on_ButtonPlay_mouse_exited"]
-[connection signal="toggled" from="Main/ContainerControls/ButtonPlay" to="Scripts/Signals" method="_on_ButtonPlay_toggled"]
+
+[node name="Updates" type="Node" parent="Scripts"]
+script = ExtResource( 17 )
+
+[node name="Effects" type="Node" parent="Scripts"]
+script = ExtResource( 16 )
+[connection signal="ready" from="." to="." method="_on_Metronome_ready"]
+[connection signal="gui_input" from="UI/Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_gui_input"]
+[connection signal="text_changed" from="UI/Main/ContainerSignature/TextEditBPM" to="Scripts/Signals" method="_on_TextEditBPM_text_changed"]
+[connection signal="gui_input" from="UI/Main/ContainerSignature/TextEditSignature" to="Scripts/Signals" method="_on_TextEditBeat_gui_input"]
+[connection signal="text_changed" from="UI/Main/ContainerSignature/TextEditSignature" to="Scripts/Signals" method="_on_TextEditSignature_text_changed"]
+[connection signal="toggled" from="UI/Main/ContainerSound/CheckBoxSoundMeasure" to="Scripts/Signals" method="_on_CheckBoxSoundMeasure_toggled"]
+[connection signal="toggled" from="UI/Main/ContainerSound/CheckBoxSoundQuart" to="Scripts/Signals" method="_on_CheckBoxSoundQuart_toggled"]
+[connection signal="toggled" from="UI/Main/ContainerSound/CheckBoxSoundSixteen" to="Scripts/Signals" method="_on_CheckBoxSoundSixteen_toggled"]
+[connection signal="mouse_entered" from="UI/Main/ContainerControls/ButtonStop" to="Scripts/Signals" method="_on_ButtonStop_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Main/ContainerControls/ButtonStop" to="Scripts/Signals" method="_on_ButtonStop_mouse_exited"]
+[connection signal="pressed" from="UI/Main/ContainerControls/ButtonStop" to="Scripts/Signals" method="_on_ButtonStop_pressed"]
+[connection signal="mouse_entered" from="UI/Main/ContainerControls/ButtonPlay" to="Scripts/Signals" method="_on_ButtonPlay_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Main/ContainerControls/ButtonPlay" to="Scripts/Signals" method="_on_ButtonPlay_mouse_exited"]
+[connection signal="toggled" from="UI/Main/ContainerControls/ButtonPlay" to="Scripts/Signals" method="_on_ButtonPlay_toggled"]
