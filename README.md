@@ -1,11 +1,11 @@
-# Musilogy
+# Musilogy (closed)
 Creating a tool for musical logic in Godot game engine
 
-Check progress in the [TODO](TODO.md) list.
+**Closed project : found an API in Unity better suited for this project.**
 
 ## Versions
 
-- 0.4 (30/03/2020 > ?):
+- 0.4 (30/03/2020 > 04/04/2020):
   - UI & UDF architecture implementation
 - 0.3 (20/03/2020 > 30/03/2020):
   - applying functional paradigm to metronome algorithm by subdividing time data + refactoring metronome for API
